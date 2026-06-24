@@ -2,1017 +2,151 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>เบญจมราชาลัย 2568</title>
 <style>
-/* ── Theme variables ─────────────────────────────────────────────────── */
 :root,[data-theme=dark]{
   --bg:#0D0D12;--bar:#16161F;--border:rgba(255,255,255,.07);
   --accent:#F43F5E;--text1:#E0E0F0;--text2:#9898B0;--text3:#50506A;
-  --stage:#0D0D12;--btn-bg:rgba(255,255,255,.04);--btn-hover:rgba(255,255,255,.09);
+  --card-bg:#1C1C28;--card-hover:#22223A;
 }
 [data-theme=light]{
   --bg:#F0F0F8;--bar:#FFFFFF;--border:rgba(0,0,0,.09);
   --accent:#F43F5E;--text1:#18181E;--text2:#4A4A6A;--text3:#9090B0;
-  --stage:#E8E8F4;--btn-bg:rgba(0,0,0,.03);--btn-hover:rgba(0,0,0,.07);
+  --card-bg:#FFFFFF;--card-hover:#F4F4FC;
 }
-
-/* ── Reset ───────────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box}
-html,body{height:100%;margin:0;padding:0;
-  background:var(--bg);color:var(--text1);
-  font-family:system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  transition:background .2s,color .2s;
-  /* Prevent pull-to-refresh and overscroll on mobile */
-  overscroll-behavior:none;
-  -webkit-overflow-scrolling:touch}
+html,body{height:100%;margin:0;padding:0;background:var(--bg);color:var(--text1);
+  font-family:system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
 
-/* ── App shell ───────────────────────────────────────────────────────── */
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
-
-/* ── Top bar ─────────────────────────────────────────────────────────── */
 #topbar{
-  height:52px;background:var(--bar);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0;z-index:50;
-  transition:background .2s}
-.brand{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:-.4px;white-space:nowrap}
-.book-name{font-size:12px;color:var(--text2);max-width:160px;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap}
-.badge{font-size:11px;font-weight:600;color:var(--accent);
-  background:rgba(123,110,246,.15);border-radius:5px;padding:2px 7px;white-space:nowrap}
+  height:56px;background:var(--bar);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:50}
+.brand-name{font-size:16px;font-weight:700;color:var(--accent);letter-spacing:-.4px}
+.brand-logo{height:30px;width:auto;object-fit:contain}
+.shelf-label{font-size:12px;color:var(--text3);margin-left:2px}
 .spacer{flex:1}
-.pg-label{font-size:11px;color:var(--text3);white-space:nowrap}
+.theme-btn{
+  width:38px;height:38px;border-radius:8px;border:1px solid var(--border);
+  background:rgba(255,255,255,.04);color:var(--text3);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;padding:0;
+  transition:background .12s,color .12s}
+.theme-btn:hover{background:rgba(255,255,255,.09);color:var(--text2)}
 
-/* ── Icon buttons ────────────────────────────────────────────────────── */
-.zoom-group{display:flex;align-items:center;gap:3px}
-.icon-btn{
-  width:38px;height:38px;border-radius:8px;
-  border:1px solid var(--border);background:var(--btn-bg);
-  color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;
-  padding:0;transition:background .12s,color .12s;flex-shrink:0;
-  /* Large touch target */
-  min-width:38px}
-.icon-btn:hover:not(:disabled){background:var(--btn-hover);color:var(--text2)}
-.icon-btn:disabled{opacity:.22;cursor:not-allowed}
-.icon-btn.active{background:rgba(123,110,246,.15)!important;
-  border-color:rgba(123,110,246,.35)!important;color:var(--accent)!important}
-.zoom-val{height:38px;min-width:52px;padding:0 6px;
-  background:var(--btn-bg);border:1px solid var(--border);
-  border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;
-  cursor:pointer;font-family:inherit;transition:background .12s}
-.zoom-val:hover{background:var(--btn-hover);color:var(--text1)}
-.topbar-sep{width:1px;height:20px;background:var(--border);flex-shrink:0}
+#hero{padding:44px 24px 20px;text-align:center;max-width:640px;margin:0 auto}
+#hero h1{font-size:28px;font-weight:800;margin:0 0 8px;color:var(--text1);letter-spacing:-.5px}
+#hero p{font-size:14px;color:var(--text2);margin:0}
 
-/* Back-to-shelf button */
-.btn-back-shelf{
-  display:inline-flex;align-items:center;gap:5px;
-  height:32px;padding:0 10px;border-radius:7px;
-  border:1px solid var(--border);background:var(--btn-bg);
-  color:var(--text2);font-size:12px;font-weight:600;font-family:inherit;
-  cursor:pointer;text-decoration:none;white-space:nowrap;
-  transition:background .12s,color .12s,border-color .15s;flex-shrink:0}
-.btn-back-shelf:hover{background:var(--btn-hover);color:var(--accent);border-color:rgba(123,110,246,.4)}
-@media(max-width:767px){.btn-back-shelf span{display:none}}
+#shelf{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:20px;padding:24px 24px 60px;max-width:1200px;margin:0 auto}
+@media(max-width:600px){
+  #shelf{grid-template-columns:repeat(2,1fr);gap:12px;padding:16px 12px 40px}
+  #hero{padding:28px 16px 16px}#hero h1{font-size:22px}}
 
-/* Theme toggle icon colours */
-[data-theme=dark]  #btn-theme:hover{color:#F5C842!important}
-[data-theme=light] #btn-theme:hover{color:var(--accent)!important}
+.book-card{
+  background:var(--card-bg);border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;cursor:pointer;text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.book-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.35);border-color:var(--accent)}
+.book-cover{aspect-ratio:3/4;overflow:hidden;background:#1a1a2e;position:relative}
+.book-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}
+.book-card:hover .book-cover img{transform:scale(1.04)}
+.cover-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#1e1e32,#2a2a48)}
+.cover-placeholder svg{opacity:.25}
+.book-info{padding:12px 14px 14px}
+.book-title{font-size:13px;font-weight:600;color:var(--text1);margin:0 0 4px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.book-meta{font-size:11px;color:var(--text3)}
+.book-badge{display:inline-flex;align-items:center;gap:4px;margin-top:8px;
+  font-size:10px;font-weight:600;color:var(--accent);
+  background:rgba(123,110,246,.12);border-radius:4px;padding:3px 7px}
 
-/* ── Mobile topbar: hide non-essential items ─────────────────────────── */
-@media(max-width:767px){
-  .book-name,.badge,.zoom-group,.topbar-sep:not(.keep),.pg-label{display:none!important}
-  #topbar{padding:0 10px;gap:8px;height:48px}
-  .icon-btn{width:42px;height:42px;border-radius:10px}
-}
-
-/* ── Mobile menu drawer ──────────────────────────────────────────────── */
-#mob-drawer{
-  display:none;
-  background:var(--bar);border-bottom:1px solid var(--border);
-  padding:10px 12px 12px;flex-direction:column;gap:10px;
-  flex-shrink:0;z-index:49;
-  animation:slideDown .15s ease}
-#mob-drawer.open{display:flex}
-@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.mob-row{display:flex;gap:8px;flex-wrap:wrap}
-.mob-btn{
-  display:flex;align-items:center;gap:6px;
-  padding:8px 12px;min-height:44px;
-  background:rgba(255,255,255,.05);border:1px solid var(--border);
-  border-radius:9px;color:var(--text2);
-  font-size:13px;font-weight:500;font-family:inherit;
-  cursor:pointer;transition:background .12s;white-space:nowrap}
-.mob-btn:hover,.mob-btn.active{background:rgba(123,110,246,.15);border-color:rgba(123,110,246,.35);color:var(--accent)}
-.mob-btn:disabled{opacity:.35;cursor:not-allowed}
-.mob-zoom-row{display:flex;align-items:center;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:10px;overflow:hidden;align-self:flex-start}
-.mob-zoom-btn{
-  width:48px;height:42px;background:transparent;border:none;
-  color:var(--text2);font-size:22px;font-weight:300;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:background .12s}
-.mob-zoom-btn:hover:not(:disabled){background:rgba(123,110,246,.15);color:var(--accent)}
-.mob-zoom-btn:disabled{opacity:.25;cursor:not-allowed}
-.mob-zoom-val{
-  min-width:56px;text-align:center;font-size:13px;font-weight:600;
-  color:var(--text2);cursor:pointer;padding:0 4px;
-  border-left:1px solid var(--border);border-right:1px solid var(--border)}
-@media(min-width:768px){#mob-drawer{display:none!important}}
-
-/* ── Main area ───────────────────────────────────────────────────────── */
-#main-area{flex:1;display:flex;min-height:0;overflow:hidden}
-
-/* ── Thumbnail panel ─────────────────────────────────────────────────── */
-#thumb-panel{width:148px;flex-shrink:0;background:var(--bar);
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;overflow:hidden;
-  transition:width .2s ease,background .2s;z-index:10}
-#thumb-panel.hidden{width:0;overflow:hidden}
-#thumb-head{padding:10px 12px 8px;font-size:10px;font-weight:700;
-  color:var(--text3);text-transform:uppercase;letter-spacing:.8px;
-  border-bottom:1px solid var(--border);flex-shrink:0}
-#thumb-list{flex:1;overflow-y:auto;overflow-x:hidden;padding:8px 8px 16px}
-#thumb-list::-webkit-scrollbar{width:3px}
-#thumb-list::-webkit-scrollbar-thumb{background:rgba(128,128,128,.2);border-radius:2px}
-.thumb-item{cursor:pointer;border-radius:5px;overflow:hidden;margin-bottom:8px;
-  border:2px solid transparent;transition:border-color .15s,transform .1s;position:relative}
-.thumb-item:hover{transform:scale(1.02)}
-.thumb-item.active{border-color:var(--accent)}
-.thumb-item img{width:100%;display:block;aspect-ratio:3/4;object-fit:cover;background:transparent}
-.thumb-stage{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:transparent}
-.thumb-stage > img{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;object-fit:cover}
-.thumb-num{position:absolute;bottom:0;left:0;right:0;
-  background:rgba(0,0,0,.55);font-size:9px;color:rgba(255,255,255,.6);
-  text-align:center;padding:2px 0}
-.thumb-item.active .thumb-num{background:rgba(123,110,246,.6);color:#fff}
-/* Hide thumb panel on mobile — use space for book */
-@media(max-width:767px){#thumb-panel,#thumb-panel.open{width:0!important;overflow:hidden}}
-
-/* ── Stage ───────────────────────────────────────────────────────────── */
-#stage{flex:1;display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-  padding:20px 56px;
-  background:var(--stage);transition:background .2s}
-#stage::before{content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);
-  width:70%;height:60%;background:radial-gradient(ellipse,rgba(123,110,246,.07) 0%,transparent 70%);
-  pointer-events:none}
-@media(max-width:767px){
-  #stage{padding:12px 44px}
-  .nav-btn{width:36px;height:62px}
-  #nav-left{left:3px}
-  #nav-right{right:3px}}
-
-/* book-scene: flex-column, never scaled */
-#book-scene{display:flex;flex-direction:column;align-items:center}
-/* zoom-wrapper: receives transform:scale() */
-#zoom-wrapper{transition:transform .2s ease;transform-origin:center bottom;position:relative}
-/* book-wrapper */
-#book-wrapper{position:relative;z-index:5}
-/* Shadow outside scale transform */
-#book-shadow{height:30px;
-  background:radial-gradient(ellipse,rgba(0,0,0,.6) 0%,transparent 70%);
-  pointer-events:none;transition:margin-top .2s ease,width .2s ease}
-
-/* Pan / swipe hint */
-#pan-hint{position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  z-index:25;pointer-events:none;
-  display:none;align-items:center;gap:5px;
-  background:rgba(0,0,0,.5);backdrop-filter:blur(6px);
-  border-radius:8px 8px 0 0;padding:4px 12px;
-  font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap}
-#pan-hint.visible{display:flex}
-[data-theme=light] #pan-hint{background:rgba(0,0,0,.14);color:rgba(0,0,0,.4)}
-
-/* ── Nav arrows ──────────────────────────────────────────────────────── */
-.nav-btn{position:absolute;top:50%;transform:translateY(-50%);
-  width:42px;height:76px;border-radius:10px;
-  border:1px solid var(--border);background:var(--btn-bg);
-  color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;
-  z-index:30;transition:background .15s,color .15s;padding:0}
-.nav-btn:hover:not(:disabled){background:rgba(123,110,246,.15);color:var(--accent)}
-.nav-btn:disabled{opacity:.2;cursor:not-allowed;pointer-events:none}
-#nav-left{left:8px}
-#nav-right{right:8px}
-
-/* ── Page / StPageFlip ───────────────────────────────────────────────── */
-.stf__page{background:#F9F9FB;overflow:hidden}
-.page-inner{width:100%;height:100%;position:relative;overflow:hidden;background:#F9F9FB}
-.page-inner img.page-img{width:100%;height:100%;object-fit:cover;display:block;
-  pointer-events:none;user-select:none;-webkit-user-drag:none}
-
-/* ── Widgets ─────────────────────────────────────────────────────────── */
-.widget-wrap{position:absolute;overflow:hidden;pointer-events:auto;z-index:10}
-/* Emphasis effects (pulse/bounce/shake/float/spin) move/scale/rotate the widget
-   past its box; allow overflow so the image isn't cropped by its own frame. */
-.widget-wrap.widget-wrap--emphasis{overflow:visible}
-
-@keyframes w-fadein {from{opacity:0}to{opacity:1}}
-@keyframes w-slideup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-@keyframes w-pulse  {0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-@keyframes w-link-pulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.5)}
-  50%    {box-shadow:0 0 0 6px rgba(59,130,246,0)}}
-.wanim-none{}
-.wanim-fadeIn {animation:w-fadein  .6s ease forwards}
-.wanim-slideUp{animation:w-slideup .5s ease forwards}
-.wanim-pulse  {animation:w-pulse  1.5s ease infinite}
-
-/* Shared widget animation keyframes (identical spec to the workspace editor) */
-.widget-anim-inner{width:100%;height:100%;transform-origin:center center}
-@keyframes wk-fadeIn    {from{opacity:0}to{opacity:1}}
-@keyframes wk-slideUp   {from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes wk-slideDown {from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes wk-slideLeft {from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes wk-slideRight{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes wk-zoomIn    {from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-@keyframes wk-zoomOut   {from{opacity:0;transform:scale(1.15)}to{opacity:1;transform:scale(1)}}
-@keyframes wk-rotateIn  {from{opacity:0;transform:rotate(-8deg) scale(.9)}to{opacity:1;transform:rotate(0) scale(1)}}
-@keyframes wk-flipX     {from{opacity:0;transform:perspective(600px) rotateX(70deg)}to{opacity:1;transform:perspective(600px) rotateX(0)}}
-@keyframes wk-blurIn    {from{opacity:0;filter:blur(8px)}to{opacity:1;filter:blur(0)}}
-@keyframes wk-pulse     {0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-@keyframes wk-bounce    {0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-@keyframes wk-shake     {0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-@keyframes wk-float     {0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes wk-spin      {from{transform:rotate(0)}to{transform:rotate(360deg)}}
-
-.widget-link-btn{width:100%;height:100%;display:flex;align-items:center;justify-content:center;gap:6px;
-  background:rgba(59,130,246,.2);border:1.5px solid rgba(59,130,246,.5);
-  border-radius:4px;color:#93C5FD;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;
-  animation:w-link-pulse 2s ease-in-out infinite}
-.widget-link-btn:hover{background:rgba(59,130,246,.35)}
-.widget-play-btn{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  background:rgba(123,110,246,.2);border:1.5px solid rgba(123,110,246,.4);
-  border-radius:4px;color:#C0B8FA;cursor:pointer;font-family:inherit}
-.widget-play-btn:hover{background:rgba(123,110,246,.35)}
-.widget-iframe{width:100%;height:100%;border:none;display:block}
-.widget-video{width:100%;height:100%;display:block}
-.widget-audio-wrap{width:100%;height:100%;display:flex;align-items:center;gap:6px;padding:4px 6px;
-  background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:4px}
-.widget-audio-wrap audio{flex:1;min-width:0}
-
-/* ── Bottom bar ──────────────────────────────────────────────────────── */
-#bottombar{
-  height:60px;background:var(--bar);border-top:1px solid var(--border);
-  display:flex;align-items:center;padding:0 10px;gap:8px;flex-shrink:0;z-index:50;
-  transition:background .2s}
-#progress-wrap{flex:1;display:flex;flex-direction:column;gap:5px}
-#progress-track{height:5px;background:rgba(128,128,128,.15);
-  border-radius:2px;cursor:pointer;position:relative}
-#progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .25s ease}
-#progress-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);
-  width:14px;height:14px;background:var(--accent);border-radius:50%;
-  border:2px solid var(--bg);pointer-events:none;transition:left .25s ease}
-#progress-labels{display:flex;align-items:center;justify-content:space-between;
-  font-size:11px;color:var(--text3)}
-#swipe-hint{display:none;align-items:center;gap:3px;font-size:10px;color:var(--text3);opacity:.7}
-#swipe-hint.visible{display:flex}
-@media(max-width:767px){#swipe-hint{display:flex}}
-.bar-btn{width:42px;height:42px;border-radius:9px;
-  border:1px solid var(--border);background:var(--btn-bg);
-  color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;
-  padding:0;transition:background .12s,color .12s;flex-shrink:0}
-.bar-btn:hover:not(:disabled){background:var(--btn-hover);color:var(--text2)}
-.bar-btn:disabled{opacity:.22;cursor:not-allowed}
-
-/* ── Loader ──────────────────────────────────────────────────────────── */
-#loader{position:fixed;inset:0;background:var(--bg);z-index:999;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
-.spinner{width:34px;height:34px;border:3px solid rgba(123,110,246,.2);
-  border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#loader p{font-size:14px;color:var(--text2)}
+#footer{text-align:center;padding:20px;font-size:11px;color:var(--text3);border-top:1px solid var(--border)}
 </style>
 </head>
 <body>
-
-<div id="loader"><div class="spinner"></div><p>Loading book…</p></div>
-
-<div id="app" style="display:none">
-
-  <!-- Top bar -->
-  <div id="topbar">
-    <span class="brand-name">เบญจมราชาลัย 2568</span>
-    <span class="book-name" id="lbl-name"></span>
-    <span class="badge"     id="lbl-pages"></span>
-    <span class="spacer"></span>
-
-    <!-- Desktop: zoom controls -->
-    <div class="zoom-group" id="zoom-group-desktop">
-      <button class="icon-btn" id="btn-zoom-out" title="Zoom out (Ctrl-)">
-        <svg viewBox="0 0 16 16" fill="currentColor" width="13" height="13">
-          <path fill-rule="evenodd" d="M7 2a5 5 0 100 10A5 5 0 007 2zM0 7a7 7 0 1112.45 4.39l3.08 3.08-1.42 1.42L11.03 11.8A7 7 0 010 7zm3.5-.5h7v1h-7V6.5z"/>
-        </svg>
-      </button>
-      <button class="zoom-val" id="btn-zoom-reset" title="Reset zoom (Ctrl+0)">100%</button>
-      <button class="icon-btn" id="btn-zoom-in" title="Zoom in (Ctrl+)">
-        <svg viewBox="0 0 16 16" fill="currentColor" width="13" height="13">
-          <path fill-rule="evenodd" d="M7 2a5 5 0 100 10A5 5 0 007 2zM0 7a7 7 0 1112.45 4.39l3.08 3.08-1.42 1.42L11.03 11.8A7 7 0 010 7zm3.5-.5h3V3.5h1V6.5H11v1H8.5V10h-1V7.5H4.5v-1z"/>
-        </svg>
-      </button>
-    </div>
-
-    <div class="topbar-sep"></div>
-
-    <!-- Desktop: thumbnail toggle -->
-    <button class="icon-btn" id="btn-thumb" title="Toggle thumbnails">
-      <svg viewBox="0 0 16 16" fill="currentColor" width="13" height="13">
-        <rect x="1" y="1" width="6" height="6" rx="1"/>
-        <rect x="9" y="1" width="6" height="6" rx="1"/>
-        <rect x="1" y="9" width="6" height="6" rx="1"/>
-        <rect x="9" y="9" width="6" height="6" rx="1"/>
-      </svg>
-    </button>
-
-    <!-- Mobile: hamburger -->
-    <button class="icon-btn" id="btn-mob-menu" title="Menu" style="display:none">
-      <svg viewBox="0 0 16 16" fill="currentColor" width="15" height="15">
-        <path fill-rule="evenodd" d="M1 2.5h14v1.5H1V2.5zm0 5h14V9H1V7.5zm0 5h14V14H1v-1.5z"/>
-      </svg>
-    </button>
-
-    <!-- Dark/Light toggle — always visible -->
-    <button class="icon-btn" id="btn-theme" title="Toggle dark/light mode">
-      <svg id="icon-sun" viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
-        <path d="M8 12A4 4 0 1 1 8 4a4 4 0 0 1 0 8zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM8 1.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 1.5zM8 12a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 12zM1.5 8a.75.75 0 0 1 .75-.75h1a.75.75 0 0 1 0 1.5h-1A.75.75 0 0 1 1.5 8zM12 8a.75.75 0 0 1 .75-.75h1a.75.75 0 0 1 0 1.5h-1A.75.75 0 0 1 12 8zM3.52 3.52a.75.75 0 0 1 1.06 0l.71.71a.75.75 0 0 1-1.06 1.06l-.71-.71a.75.75 0 0 1 0-1.06zM10.71 10.71a.75.75 0 0 1 1.06 0l.71.71a.75.75 0 0 1-1.06 1.06l-.71-.71a.75.75 0 0 1 0-1.06zM3.52 12.48a.75.75 0 0 1 0-1.06l.71-.71a.75.75 0 1 1 1.06 1.06l-.71.71a.75.75 0 0 1-1.06 0zM10.71 5.29a.75.75 0 0 1 0-1.06l.71-.71a.75.75 0 1 1 1.06 1.06l-.71.71a.75.75 0 0 1-1.06 0z"/>
-      </svg>
-      <svg id="icon-moon" viewBox="0 0 16 16" fill="currentColor" width="14" height="14" style="display:none">
-        <path d="M6 .278a.77.77 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-      </svg>
-    </button>
-
-    <div class="topbar-sep keep"></div>
-    <span class="pg-label" id="lbl-pg"></span>
-    <a href="../index.html" class="btn-back-shelf" title="Back to Shelf">
-        <svg viewBox="0 0 16 16" fill="currentColor" width="13" height="13"><path d="M9.354 1.646a.5.5 0 0 1 0 .708L5.707 6H14.5a.5.5 0 0 1 0 1H5.707l3.647 3.646a.5.5 0 0 1-.708.708l-4.5-4.5a.5.5 0 0 1 0-.708l4.5-4.5a.5.5 0 0 1 .708 0z"/></svg>
-        <span>Shelf</span>
-      </a>
-  </div>
-
-  <!-- Mobile drawer (hidden on desktop) -->
-  <div id="mob-drawer">
-    <div class="mob-row">
-      <button class="mob-btn" id="mob-btn-thumb">
-        <svg viewBox="0 0 16 16" fill="currentColor" width="15" height="15">
-          <rect x="1" y="1" width="6" height="6" rx="1"/>
-          <rect x="9" y="1" width="6" height="6" rx="1"/>
-          <rect x="1" y="9" width="6" height="6" rx="1"/>
-          <rect x="9" y="9" width="6" height="6" rx="1"/>
-        </svg>
-        <span>Pages</span>
-      </button>
-    </div>
-    <div class="mob-zoom-row">
-      <button class="mob-zoom-btn" id="mob-btn-zoom-out">−</button>
-      <span class="mob-zoom-val" id="mob-zoom-val" id="mob-zoom-reset">100%</span>
-      <button class="mob-zoom-btn" id="mob-btn-zoom-in">+</button>
-    </div>
-  </div>
-
-  <!-- Main area -->
-  <div id="main-area">
-
-    <!-- Thumbnail panel -->
-    <div id="thumb-panel" class="hidden">
-      <div id="thumb-head">Pages</div>
-      <div id="thumb-list"></div>
-    </div>
-
-    <!-- Stage -->
-    <div id="stage">
-      <button class="nav-btn" id="nav-left" disabled>
-        <svg viewBox="0 0 14 14" fill="none" width="16" height="16">
-          <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-
-      <!-- book-scene: outer flex-col, never scaled -->
-      <div id="book-scene">
-        <div id="zoom-wrapper">
-          <div id="book-wrapper"><!-- StPageFlip mounts here --></div>
-        </div>
-        <!-- shadow is sibling of zoom-wrapper — never scaled -->
-        <div id="book-shadow"></div>
-      </div>
-
-      <!-- Pan/swipe hint -->
-      <div id="pan-hint">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="12" height="12">
-          <path d="M10 2a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V3a1 1 0 0 1 1-1z"/>
-        </svg>
-        <span id="pan-hint-text">Drag to pan · Ctrl+scroll to zoom</span>
-      </div>
-
-      <button class="nav-btn" id="nav-right" disabled>
-        <svg viewBox="0 0 14 14" fill="none" width="16" height="16">
-          <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- Bottom bar -->
-  <div id="bottombar">
-    <button class="bar-btn" id="btn-prev" disabled>
-      <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
-        <path d="M7 2L2 7l5 5V9h7V5H7V2z"/>
-      </svg>
-    </button>
-    <div id="progress-wrap">
-      <div id="progress-track">
-        <div id="progress-fill"  style="width:0%"></div>
-        <div id="progress-thumb" style="left:0%"></div>
-      </div>
-      <div id="progress-labels">
-        <span id="lbl-spread">Front Cover</span>
-        <!-- swipe hint shown on mobile when not zoomed -->
-        <span id="swipe-hint">
-          <svg viewBox="0 0 16 16" fill="currentColor" width="10" height="10">
-            <path d="M11.354 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 8 7.646 10.646a.5.5 0 0 0 .708.708l3-3zm-7 3a.5.5 0 0 0 .708-.708L2.707 8l2.355-2.646a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3z"/>
-          </svg>
-          Swipe
-        </span>
-        <span id="lbl-pct">0%</span>
-      </div>
-    </div>
-    <button class="bar-btn" id="btn-next" disabled>
-      <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
-        <path d="M9 2l5 5-5 5V9H2V5h7V2z"/>
-      </svg>
-    </button>
-  </div>
+<div id="topbar">
+  <span class="brand-name">เบญจมราชาลัย 2568</span>
+  <span class="shelf-label">/ Shelf</span>
+  <div class="spacer"></div>
+  <button class="theme-btn" id="btn-theme" title="Toggle dark/light mode">
+    <svg id="icon-sun" viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
+      <path d="M8 12A4 4 0 1 1 8 4a4 4 0 0 1 0 8zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM8 1.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 1.5z"/>
+    </svg>
+    <svg id="icon-moon" viewBox="0 0 16 16" fill="currentColor" width="14" height="14" style="display:none">
+      <path d="M6 .278a.77.77 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    </svg>
+  </button>
 </div>
 
-<!-- StPageFlip bundled inline — no CDN required, works from file:// -->
-<script id="page-flip-bundle">!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t=t||self).St={})}(this,(function(t){"use strict";class e{constructor(t,e){this.state={angle:0,area:[],position:{x:0,y:0},hardAngle:0,hardDrawingAngle:0},this.createdDensity=e,this.nowDrawingDensity=this.createdDensity,this.render=t}setDensity(t){this.createdDensity=t,this.nowDrawingDensity=t}setDrawingDensity(t){this.nowDrawingDensity=t}setPosition(t){this.state.position=t}setAngle(t){this.state.angle=t}setArea(t){this.state.area=t}setHardDrawingAngle(t){this.state.hardDrawingAngle=t}setHardAngle(t){this.state.hardAngle=t,this.state.hardDrawingAngle=t}setOrientation(t){this.orientation=t}getDrawingDensity(){return this.nowDrawingDensity}getDensity(){return this.createdDensity}getHardAngle(){return this.state.hardAngle}}class i extends e{constructor(t,e,i){super(t,i),this.image=null,this.isLoad=!1,this.loadingAngle=0,this.image=new Image,this.image.src=e}draw(t){const e=this.render.getContext(),i=this.render.convertToGlobal(this.state.position),s=this.render.getRect().pageWidth,n=this.render.getRect().height;e.save(),e.translate(i.x,i.y),e.beginPath();for(let t of this.state.area)null!==t&&(t=this.render.convertToGlobal(t),e.lineTo(t.x-i.x,t.y-i.y));e.rotate(this.state.angle),e.clip(),this.isLoad?e.drawImage(this.image,0,0,s,n):this.drawLoader(e,{x:0,y:0},s,n),e.restore()}simpleDraw(t){const e=this.render.getRect(),i=this.render.getContext(),s=e.pageWidth,n=e.height,h=1===t?e.left+e.pageWidth:e.left,r=e.top;this.isLoad?i.drawImage(this.image,h,r,s,n):this.drawLoader(i,{x:h,y:r},s,n)}drawLoader(t,e,i,s){t.beginPath(),t.strokeStyle="rgb(200, 200, 200)",t.fillStyle="rgb(255, 255, 255)",t.lineWidth=1,t.rect(e.x+1,e.y+1,i-1,s-1),t.stroke(),t.fill();const n={x:e.x+i/2,y:e.y+s/2};t.beginPath(),t.lineWidth=10,t.arc(n.x,n.y,20,this.loadingAngle,3*Math.PI/2+this.loadingAngle),t.stroke(),t.closePath(),this.loadingAngle+=.07,this.loadingAngle>=2*Math.PI&&(this.loadingAngle=0)}load(){this.isLoad||(this.image.onload=()=>{this.isLoad=!0})}newTemporaryCopy(){return this}getTemporaryCopy(){return this}hideTemporaryCopy(){}}class s{constructor(t,e){this.pages=[],this.currentPageIndex=0,this.currentSpreadIndex=0,this.landscapeSpread=[],this.portraitSpread=[],this.render=e,this.app=t,this.currentPageIndex=0,this.isShowCover=this.app.getSettings().showCover}destroy(){this.pages=[]}createSpread(){this.landscapeSpread=[],this.portraitSpread=[];for(let t=0;t<this.pages.length;t++)this.portraitSpread.push([t]);let t=0;this.isShowCover&&(this.pages[0].setDensity("hard"),this.landscapeSpread.push([t]),t++);for(let e=t;e<this.pages.length;e+=2)e<this.pages.length-1?this.landscapeSpread.push([e,e+1]):(this.landscapeSpread.push([e]),this.pages[e].setDensity("hard"))}getSpread(){return"landscape"===this.render.getOrientation()?this.landscapeSpread:this.portraitSpread}getSpreadIndexByPage(t){const e=this.getSpread();for(let i=0;i<e.length;i++)if(t===e[i][0]||t===e[i][1])return i;return null}getPageCount(){return this.pages.length}getPages(){return this.pages}getPage(t){if(t>=0&&t<this.pages.length)return this.pages[t];throw new Error("Invalid page number")}nextBy(t){const e=this.pages.indexOf(t);return e<this.pages.length-1?this.pages[e+1]:null}prevBy(t){const e=this.pages.indexOf(t);return e>0?this.pages[e-1]:null}getFlippingPage(t){const e=this.currentSpreadIndex;if("portrait"===this.render.getOrientation())return 0===t?this.pages[e].newTemporaryCopy():this.pages[e-1];{const i=0===t?this.getSpread()[e+1]:this.getSpread()[e-1];return 1===i.length||0===t?this.pages[i[0]]:this.pages[i[1]]}}getBottomPage(t){const e=this.currentSpreadIndex;if("portrait"===this.render.getOrientation())return 0===t?this.pages[e+1]:this.pages[e-1];{const i=0===t?this.getSpread()[e+1]:this.getSpread()[e-1];return 1===i.length?this.pages[i[0]]:0===t?this.pages[i[1]]:this.pages[i[0]]}}showNext(){this.currentSpreadIndex<this.getSpread().length&&(this.currentSpreadIndex++,this.showSpread())}showPrev(){this.currentSpreadIndex>0&&(this.currentSpreadIndex--,this.showSpread())}getCurrentPageIndex(){return this.currentPageIndex}show(t=null){if(null===t&&(t=this.currentPageIndex),t<0||t>=this.pages.length)return;const e=this.getSpreadIndexByPage(t);null!==e&&(this.currentSpreadIndex=e,this.showSpread())}getCurrentSpreadIndex(){return this.currentSpreadIndex}setCurrentSpreadIndex(t){if(!(t>=0&&t<this.getSpread().length))throw new Error("Invalid page");this.currentSpreadIndex=t}showSpread(){const t=this.getSpread()[this.currentSpreadIndex];2===t.length?(this.render.setLeftPage(this.pages[t[0]]),this.render.setRightPage(this.pages[t[1]])):"landscape"===this.render.getOrientation()&&t[0]===this.pages.length-1?(this.render.setLeftPage(this.pages[t[0]]),this.render.setRightPage(null)):(this.render.setLeftPage(null),this.render.setRightPage(this.pages[t[0]])),this.currentPageIndex=t[0],this.app.updatePageIndex(this.currentPageIndex)}}class n extends s{constructor(t,e,i){super(t,e),this.imagesHref=i}load(){for(const t of this.imagesHref){const e=new i(this.render,t,"soft");e.load(),this.pages.push(e)}this.createSpread()}}class h{static GetDistanceBetweenTwoPoint(t,e){return null===t||null===e?1/0:Math.sqrt(Math.pow(e.x-t.x,2)+Math.pow(e.y-t.y,2))}static GetSegmentLength(t){return h.GetDistanceBetweenTwoPoint(t[0],t[1])}static GetAngleBetweenTwoLine(t,e){const i=t[0].y-t[1].y,s=e[0].y-e[1].y,n=t[1].x-t[0].x,h=e[1].x-e[0].x;return Math.acos((i*s+n*h)/(Math.sqrt(i*i+n*n)*Math.sqrt(s*s+h*h)))}static PointInRect(t,e){return null===e?null:e.x>=t.left&&e.x<=t.width+t.left&&e.y>=t.top&&e.y<=t.top+t.height?e:null}static GetRotatedPoint(t,e,i){return{x:t.x*Math.cos(i)+t.y*Math.sin(i)+e.x,y:t.y*Math.cos(i)-t.x*Math.sin(i)+e.y}}static LimitPointToCircle(t,e,i){if(h.GetDistanceBetweenTwoPoint(t,i)<=e)return i;const s=t.x,n=t.y,r=i.x,o=i.y;let a=Math.sqrt(Math.pow(e,2)*Math.pow(s-r,2)/(Math.pow(s-r,2)+Math.pow(n-o,2)))+s;i.x<0&&(a*=-1);let g=(a-s)*(n-o)/(s-r)+n;return s-r+n===0&&(g=e),{x:a,y:g}}static GetIntersectBetweenTwoSegment(t,e,i){return h.PointInRect(t,h.GetIntersectBeetwenTwoLine(e,i))}static GetIntersectBeetwenTwoLine(t,e){const i=t[0].y-t[1].y,s=e[0].y-e[1].y,n=t[1].x-t[0].x,h=e[1].x-e[0].x,r=t[0].x*t[1].y-t[1].x*t[0].y,o=e[0].x*e[1].y-e[1].x*e[0].y,a=i*o-s*r,g=n*o-h*r,l=-(r*h-o*n)/(i*h-s*n),d=-(i*o-s*r)/(i*h-s*n);if(isFinite(l)&&isFinite(d))return{x:l,y:d};if(Math.abs(a-g)<.1)throw new Error("Segment included");return null}static GetCordsFromTwoPoint(t,e){const i=Math.abs(t.x-e.x),s=Math.abs(t.y-e.y),n=Math.max(i,s),h=[t];function r(t,e,i,s,n){return e>t?t+n*(i/s):e<t?t-n*(i/s):t}for(let o=1;o<=n;o+=1)h.push({x:r(t.x,e.x,i,n,o),y:r(t.y,e.y,s,n,o)});return h}}class r extends e{constructor(t,e,i){super(t,i),this.copiedElement=null,this.temporaryCopy=null,this.isLoad=!1,this.element=e,this.element.classList.add("stf__item"),this.element.classList.add("--"+i)}newTemporaryCopy(){return"hard"===this.nowDrawingDensity?this:(null===this.temporaryCopy&&(this.copiedElement=this.element.cloneNode(!0),this.element.parentElement.appendChild(this.copiedElement),this.temporaryCopy=new r(this.render,this.copiedElement,this.nowDrawingDensity)),this.getTemporaryCopy())}getTemporaryCopy(){return this.temporaryCopy}hideTemporaryCopy(){null!==this.temporaryCopy&&(this.copiedElement.remove(),this.copiedElement=null,this.temporaryCopy=null)}draw(t){const e=t||this.nowDrawingDensity,i=this.render.convertToGlobal(this.state.position),s=this.render.getRect().pageWidth,n=this.render.getRect().height;this.element.classList.remove("--simple");const h=`\n            display: block;\n            z-index: ${this.element.style.zIndex};\n            left: 0;\n            top: 0;\n            width: ${s}px;\n            height: ${n}px;\n        `;"hard"===e?this.drawHard(h):this.drawSoft(i,h)}drawHard(t=""){const e=this.render.getRect().left+this.render.getRect().width/2,i=this.state.hardDrawingAngle,s=t+"\n                backface-visibility: hidden;\n                -webkit-backface-visibility: hidden;\n                clip-path: none;\n                -webkit-clip-path: none;\n            "+(0===this.orientation?`transform-origin: ${this.render.getRect().pageWidth}px 0; \n                   transform: translate3d(0, 0, 0) rotateY(${i}deg);`:`transform-origin: 0 0; \n                   transform: translate3d(${e}px, 0, 0) rotateY(${i}deg);`);this.element.style.cssText=s}drawSoft(t,e=""){let i="polygon( ";for(const t of this.state.area)if(null!==t){let e=1===this.render.getDirection()?{x:-t.x+this.state.position.x,y:t.y-this.state.position.y}:{x:t.x-this.state.position.x,y:t.y-this.state.position.y};e=h.GetRotatedPoint(e,{x:0,y:0},this.state.angle),i+=e.x+"px "+e.y+"px, "}i=i.slice(0,-2),i+=")";const s=e+`transform-origin: 0 0; clip-path: ${i}; -webkit-clip-path: ${i};`+(this.render.isSafari()&&0===this.state.angle?`transform: translate(${t.x}px, ${t.y}px);`:`transform: translate3d(${t.x}px, ${t.y}px, 0) rotate(${this.state.angle}rad);`);this.element.style.cssText=s}simpleDraw(t){const e=this.render.getRect(),i=e.pageWidth,s=e.height,n=1===t?e.left+e.pageWidth:e.left,h=e.top;this.element.classList.add("--simple"),this.element.style.cssText=`\n            position: absolute; \n            display: block; \n            height: ${s}px; \n            left: ${n}px; \n            top: ${h}px; \n            width: ${i}px; \n            z-index: ${this.render.getSettings().startZIndex+1};`}getElement(){return this.element}load(){this.isLoad=!0}setOrientation(t){super.setOrientation(t),this.element.classList.remove("--left","--right"),this.element.classList.add(1===t?"--right":"--left")}setDrawingDensity(t){this.element.classList.remove("--soft","--hard"),this.element.classList.add("--"+t),super.setDrawingDensity(t)}}class o extends s{constructor(t,e,i,s){super(t,e),this.element=i,this.pagesElement=s}load(){for(const t of this.pagesElement){const e=new r(this.render,t,"hard"===t.dataset.density?"hard":"soft");e.load(),this.pages.push(e)}this.createSpread()}}class a{constructor(t,e,i,s){this.direction=t,this.corner=e,this.topIntersectPoint=null,this.sideIntersectPoint=null,this.bottomIntersectPoint=null,this.pageWidth=parseInt(i,10),this.pageHeight=parseInt(s,10)}calc(t){try{return this.position=this.calcAngleAndPosition(t),this.calculateIntersectPoint(this.position),!0}catch(t){return!1}}getFlippingClipArea(){const t=[];let e=!1;return t.push(this.rect.topLeft),t.push(this.topIntersectPoint),null===this.sideIntersectPoint?e=!0:(t.push(this.sideIntersectPoint),null===this.bottomIntersectPoint&&(e=!1)),t.push(this.bottomIntersectPoint),(e||"bottom"===this.corner)&&t.push(this.rect.bottomLeft),t}getBottomClipArea(){const t=[];return t.push(this.topIntersectPoint),"top"===this.corner?t.push({x:this.pageWidth,y:0}):(null!==this.topIntersectPoint&&t.push({x:this.pageWidth,y:0}),t.push({x:this.pageWidth,y:this.pageHeight})),null!==this.sideIntersectPoint?h.GetDistanceBetweenTwoPoint(this.sideIntersectPoint,this.topIntersectPoint)>=10&&t.push(this.sideIntersectPoint):"top"===this.corner&&t.push({x:this.pageWidth,y:this.pageHeight}),t.push(this.bottomIntersectPoint),t.push(this.topIntersectPoint),t}getAngle(){return 0===this.direction?-this.angle:this.angle}getRect(){return this.rect}getPosition(){return this.position}getActiveCorner(){return 0===this.direction?this.rect.topLeft:this.rect.topRight}getDirection(){return this.direction}getFlippingProgress(){return Math.abs((this.position.x-this.pageWidth)/(2*this.pageWidth)*100)}getCorner(){return this.corner}getBottomPagePosition(){return 1===this.direction?{x:this.pageWidth,y:0}:{x:0,y:0}}getShadowStartPoint(){return"top"===this.corner?this.topIntersectPoint:null!==this.sideIntersectPoint?this.sideIntersectPoint:this.topIntersectPoint}getShadowAngle(){const t=h.GetAngleBetweenTwoLine(this.getSegmentToShadowLine(),[{x:0,y:0},{x:this.pageWidth,y:0}]);return 0===this.direction?t:Math.PI-t}calcAngleAndPosition(t){let e=t;if(this.updateAngleAndGeometry(e),e="top"===this.corner?this.checkPositionAtCenterLine(e,{x:0,y:0},{x:0,y:this.pageHeight}):this.checkPositionAtCenterLine(e,{x:0,y:this.pageHeight},{x:0,y:0}),Math.abs(e.x-this.pageWidth)<1&&Math.abs(e.y)<1)throw new Error("Point is too small");return e}updateAngleAndGeometry(t){this.angle=this.calculateAngle(t),this.rect=this.getPageRect(t)}calculateAngle(t){const e=this.pageWidth-t.x+1,i="bottom"===this.corner?this.pageHeight-t.y:t.y;let s=2*Math.acos(e/Math.sqrt(i*i+e*e));i<0&&(s=-s);const n=Math.PI-s;if(!isFinite(s)||n>=0&&n<.003)throw new Error("The G point is too small");return"bottom"===this.corner&&(s=-s),s}getPageRect(t){return"top"===this.corner?this.getRectFromBasePoint([{x:0,y:0},{x:this.pageWidth,y:0},{x:0,y:this.pageHeight},{x:this.pageWidth,y:this.pageHeight}],t):this.getRectFromBasePoint([{x:0,y:-this.pageHeight},{x:this.pageWidth,y:-this.pageHeight},{x:0,y:0},{x:this.pageWidth,y:0}],t)}getRectFromBasePoint(t,e){return{topLeft:this.getRotatedPoint(t[0],e),topRight:this.getRotatedPoint(t[1],e),bottomLeft:this.getRotatedPoint(t[2],e),bottomRight:this.getRotatedPoint(t[3],e)}}getRotatedPoint(t,e){return{x:t.x*Math.cos(this.angle)+t.y*Math.sin(this.angle)+e.x,y:t.y*Math.cos(this.angle)-t.x*Math.sin(this.angle)+e.y}}calculateIntersectPoint(t){const e={left:-1,top:-1,width:this.pageWidth+2,height:this.pageHeight+2};"top"===this.corner?(this.topIntersectPoint=h.GetIntersectBetweenTwoSegment(e,[t,this.rect.topRight],[{x:0,y:0},{x:this.pageWidth,y:0}]),this.sideIntersectPoint=h.GetIntersectBetweenTwoSegment(e,[t,this.rect.bottomLeft],[{x:this.pageWidth,y:0},{x:this.pageWidth,y:this.pageHeight}]),this.bottomIntersectPoint=h.GetIntersectBetweenTwoSegment(e,[this.rect.bottomLeft,this.rect.bottomRight],[{x:0,y:this.pageHeight},{x:this.pageWidth,y:this.pageHeight}])):(this.topIntersectPoint=h.GetIntersectBetweenTwoSegment(e,[this.rect.topLeft,this.rect.topRight],[{x:0,y:0},{x:this.pageWidth,y:0}]),this.sideIntersectPoint=h.GetIntersectBetweenTwoSegment(e,[t,this.rect.topLeft],[{x:this.pageWidth,y:0},{x:this.pageWidth,y:this.pageHeight}]),this.bottomIntersectPoint=h.GetIntersectBetweenTwoSegment(e,[this.rect.bottomLeft,this.rect.bottomRight],[{x:0,y:this.pageHeight},{x:this.pageWidth,y:this.pageHeight}]))}checkPositionAtCenterLine(t,e,i){let s=t;const n=h.LimitPointToCircle(e,this.pageWidth,s);s!==n&&(s=n,this.updateAngleAndGeometry(s));const r=Math.sqrt(Math.pow(this.pageWidth,2)+Math.pow(this.pageHeight,2));let o=this.rect.bottomRight,a=this.rect.topLeft;if("bottom"===this.corner&&(o=this.rect.topRight,a=this.rect.bottomLeft),o.x<=0){const t=h.LimitPointToCircle(i,r,a);t!==s&&(s=t,this.updateAngleAndGeometry(s))}return s}getSegmentToShadowLine(){const t=this.getShadowStartPoint();return[t,t!==this.sideIntersectPoint&&null!==this.sideIntersectPoint?this.sideIntersectPoint:this.bottomIntersectPoint]}}class g{constructor(t,e){this.flippingPage=null,this.bottomPage=null,this.calc=null,this.state="read",this.render=t,this.app=e}fold(t){this.setState("user_fold"),null===this.calc&&this.start(t),this.do(this.render.convertToPage(t))}flip(t){if(this.app.getSettings().disableFlipByClick&&!this.isPointOnCorners(t))return;if(null!==this.calc&&this.render.finishAnimation(),!this.start(t))return;const e=this.getBoundsRect();this.setState("flipping");const i=e.height/10,s="bottom"===this.calc.getCorner()?e.height-i:i,n="bottom"===this.calc.getCorner()?e.height:0;this.calc.calc({x:e.pageWidth-i,y:s}),this.animateFlippingTo({x:e.pageWidth-i,y:s},{x:-e.pageWidth,y:n},!0)}start(t){this.reset();const e=this.render.convertToBook(t),i=this.getBoundsRect(),s=this.getDirectionByPoint(e),n=e.y>=i.height/2?"bottom":"top";if(!this.checkDirection(s))return!1;try{if(this.flippingPage=this.app.getPageCollection().getFlippingPage(s),this.bottomPage=this.app.getPageCollection().getBottomPage(s),"landscape"===this.render.getOrientation())if(1===s){const t=this.app.getPageCollection().nextBy(this.flippingPage);null!==t&&this.flippingPage.getDensity()!==t.getDensity()&&(this.flippingPage.setDrawingDensity("hard"),t.setDrawingDensity("hard"))}else{const t=this.app.getPageCollection().prevBy(this.flippingPage);null!==t&&this.flippingPage.getDensity()!==t.getDensity()&&(this.flippingPage.setDrawingDensity("hard"),t.setDrawingDensity("hard"))}return this.render.setDirection(s),this.calc=new a(s,n,i.pageWidth.toString(10),i.height.toString(10)),!0}catch(t){return!1}}do(t){if(null!==this.calc&&this.calc.calc(t)){const t=this.calc.getFlippingProgress();this.bottomPage.setArea(this.calc.getBottomClipArea()),this.bottomPage.setPosition(this.calc.getBottomPagePosition()),this.bottomPage.setAngle(0),this.bottomPage.setHardAngle(0),this.flippingPage.setArea(this.calc.getFlippingClipArea()),this.flippingPage.setPosition(this.calc.getActiveCorner()),this.flippingPage.setAngle(this.calc.getAngle()),0===this.calc.getDirection()?this.flippingPage.setHardAngle(90*(200-2*t)/100):this.flippingPage.setHardAngle(-90*(200-2*t)/100),this.render.setPageRect(this.calc.getRect()),this.render.setBottomPage(this.bottomPage),this.render.setFlippingPage(this.flippingPage),this.render.setShadowData(this.calc.getShadowStartPoint(),this.calc.getShadowAngle(),t,this.calc.getDirection())}}flipToPage(t,e){const i=this.app.getPageCollection().getCurrentSpreadIndex(),s=this.app.getPageCollection().getSpreadIndexByPage(t);try{s>i&&(this.app.getPageCollection().setCurrentSpreadIndex(s-1),this.flipNext(e)),s<i&&(this.app.getPageCollection().setCurrentSpreadIndex(s+1),this.flipPrev(e))}catch(t){}}flipNext(t){this.flip({x:this.render.getRect().left+2*this.render.getRect().pageWidth-10,y:"top"===t?1:this.render.getRect().height-2})}flipPrev(t){this.flip({x:10,y:"top"===t?1:this.render.getRect().height-2})}stopMove(){if(null===this.calc)return;const t=this.calc.getPosition(),e=this.getBoundsRect(),i="bottom"===this.calc.getCorner()?e.height:0;t.x<=0?this.animateFlippingTo(t,{x:-e.pageWidth,y:i},!0):this.animateFlippingTo(t,{x:e.pageWidth,y:i},!1)}showCorner(t){if(!this.checkState("read","fold_corner"))return;const e=this.getBoundsRect(),i=e.pageWidth;if(this.isPointOnCorners(t))if(null===this.calc){if(!this.start(t))return;this.setState("fold_corner"),this.calc.calc({x:i-1,y:1});const s=50,n="bottom"===this.calc.getCorner()?e.height-1:1,h="bottom"===this.calc.getCorner()?e.height-s:s;this.animateFlippingTo({x:i-1,y:n},{x:i-s,y:h},!1,!1)}else this.do(this.render.convertToPage(t));else this.setState("read"),this.render.finishAnimation(),this.stopMove()}animateFlippingTo(t,e,i,s=!0){const n=h.GetCordsFromTwoPoint(t,e),r=[];for(const t of n)r.push(()=>this.do(t));const o=this.getAnimationDuration(n.length);this.render.startAnimation(r,o,()=>{this.calc&&(i&&(1===this.calc.getDirection()?this.app.turnToPrevPage():this.app.turnToNextPage()),s&&(this.render.setBottomPage(null),this.render.setFlippingPage(null),this.render.clearShadow(),this.setState("read"),this.reset()))})}getCalculation(){return this.calc}getState(){return this.state}setState(t){this.state!==t&&(this.app.updateState(t),this.state=t)}getDirectionByPoint(t){const e=this.getBoundsRect();if("portrait"===this.render.getOrientation()){if(t.x-e.pageWidth<=e.width/5)return 1}else if(t.x<e.width/2)return 1;return 0}getAnimationDuration(t){const e=this.app.getSettings().flippingTime;return t>=1e3?e:t/1e3*e}checkDirection(t){return 0===t?this.app.getCurrentPageIndex()<this.app.getPageCount()-1:this.app.getCurrentPageIndex()>=1}reset(){this.calc=null,this.flippingPage=null,this.bottomPage=null}getBoundsRect(){return this.render.getRect()}checkState(...t){for(const e of t)if(this.state===e)return!0;return!1}isPointOnCorners(t){const e=this.getBoundsRect(),i=e.pageWidth,s=Math.sqrt(Math.pow(i,2)+Math.pow(e.height,2))/5,n=this.render.convertToBook(t);return n.x>0&&n.y>0&&n.x<e.width&&n.y<e.height&&(n.x<s||n.x>e.width-s)&&(n.y<s||n.y>e.height-s)}}class l{constructor(t,e){this.leftPage=null,this.rightPage=null,this.flippingPage=null,this.bottomPage=null,this.direction=null,this.orientation=null,this.shadow=null,this.animation=null,this.pageRect=null,this.boundsRect=null,this.timer=0,this.safari=!1,this.setting=e,this.app=t;const i=new RegExp("Version\\/[\\d\\.]+.*Safari/");this.safari=null!==i.exec(window.navigator.userAgent)}render(t){if(null!==this.animation){const e=Math.round((t-this.animation.startedAt)/this.animation.durationFrame);e<this.animation.frames.length?this.animation.frames[e]():(this.animation.onAnimateEnd(),this.animation=null)}this.timer=t,this.drawFrame()}start(){this.update();const t=e=>{this.render(e),requestAnimationFrame(t)};requestAnimationFrame(t)}startAnimation(t,e,i){this.finishAnimation(),this.animation={frames:t,duration:e,durationFrame:e/t.length,onAnimateEnd:i,startedAt:this.timer}}finishAnimation(){null!==this.animation&&(this.animation.frames[this.animation.frames.length-1](),null!==this.animation.onAnimateEnd&&this.animation.onAnimateEnd()),this.animation=null}update(){this.boundsRect=null;const t=this.calculateBoundsRect();this.orientation!==t&&(this.orientation=t,this.app.updateOrientation(t))}calculateBoundsRect(){let t="landscape";const e=this.getBlockWidth(),i=e/2,s=this.getBlockHeight()/2,n=this.setting.width/this.setting.height;let h=this.setting.width,r=this.setting.height,o=i-h;return"stretch"===this.setting.size?(e<2*this.setting.minWidth&&this.app.getSettings().usePortrait&&(t="portrait"),h="portrait"===t?this.getBlockWidth():this.getBlockWidth()/2,h>this.setting.maxWidth&&(h=this.setting.maxWidth),r=h/n,r>this.getBlockHeight()&&(r=this.getBlockHeight(),h=r*n),o="portrait"===t?i-h/2-h:i-h):e<2*h&&this.app.getSettings().usePortrait&&(t="portrait",o=i-h/2-h),this.boundsRect={left:o,top:s-r/2,width:2*h,height:r,pageWidth:h},t}setShadowData(t,e,i,s){if(!this.app.getSettings().drawShadow)return;const n=100*this.getSettings().maxShadowOpacity;this.shadow={pos:t,angle:e,width:3*this.getRect().pageWidth/4*i/100,opacity:(100-i)*n/100/100,direction:s,progress:2*i}}clearShadow(){this.shadow=null}getBlockWidth(){return this.app.getUI().getDistElement().offsetWidth}getBlockHeight(){return this.app.getUI().getDistElement().offsetHeight}getDirection(){return this.direction}getRect(){return null===this.boundsRect&&this.calculateBoundsRect(),this.boundsRect}getSettings(){return this.app.getSettings()}getOrientation(){return this.orientation}setPageRect(t){this.pageRect=t}setDirection(t){this.direction=t}setRightPage(t){null!==t&&t.setOrientation(1),this.rightPage=t}setLeftPage(t){null!==t&&t.setOrientation(0),this.leftPage=t}setBottomPage(t){null!==t&&t.setOrientation(1===this.direction?0:1),this.bottomPage=t}setFlippingPage(t){null!==t&&t.setOrientation(0===this.direction&&"portrait"!==this.orientation?0:1),this.flippingPage=t}convertToBook(t){const e=this.getRect();return{x:t.x-e.left,y:t.y-e.top}}isSafari(){return this.safari}convertToPage(t,e){e||(e=this.direction);const i=this.getRect();return{x:0===e?t.x-i.left-i.width/2:i.width/2-t.x+i.left,y:t.y-i.top}}convertToGlobal(t,e){if(e||(e=this.direction),null==t)return null;const i=this.getRect();return{x:0===e?t.x+i.left+i.width/2:i.width/2-t.x+i.left,y:t.y+i.top}}convertRectToGlobal(t,e){return e||(e=this.direction),{topLeft:this.convertToGlobal(t.topLeft,e),topRight:this.convertToGlobal(t.topRight,e),bottomLeft:this.convertToGlobal(t.bottomLeft,e),bottomRight:this.convertToGlobal(t.bottomRight,e)}}}class d extends l{constructor(t,e,i){super(t,e),this.canvas=i,this.ctx=i.getContext("2d")}getContext(){return this.ctx}reload(){}drawFrame(){this.clear(),"portrait"!==this.orientation&&null!=this.leftPage&&this.leftPage.simpleDraw(0),null!=this.rightPage&&this.rightPage.simpleDraw(1),null!=this.bottomPage&&this.bottomPage.draw(),this.drawBookShadow(),null!=this.flippingPage&&this.flippingPage.draw(),null!=this.shadow&&(this.drawOuterShadow(),this.drawInnerShadow());const t=this.getRect();"portrait"===this.orientation&&(this.ctx.beginPath(),this.ctx.rect(t.left+t.pageWidth,t.top,t.width,t.height),this.ctx.clip())}drawBookShadow(){const t=this.getRect();this.ctx.save(),this.ctx.beginPath();const e=t.width/20;this.ctx.rect(t.left,t.top,t.width,t.height);const i={x:t.left+t.width/2-e/2,y:0};this.ctx.translate(i.x,i.y);const s=this.ctx.createLinearGradient(0,0,e,0);s.addColorStop(0,"rgba(0, 0, 0, 0)"),s.addColorStop(.4,"rgba(0, 0, 0, 0.2)"),s.addColorStop(.49,"rgba(0, 0, 0, 0.1)"),s.addColorStop(.5,"rgba(0, 0, 0, 0.5)"),s.addColorStop(.51,"rgba(0, 0, 0, 0.4)"),s.addColorStop(1,"rgba(0, 0, 0, 0)"),this.ctx.clip(),this.ctx.fillStyle=s,this.ctx.fillRect(0,0,e,2*t.height),this.ctx.restore()}drawOuterShadow(){const t=this.getRect();this.ctx.save(),this.ctx.beginPath(),this.ctx.rect(t.left,t.top,t.width,t.height);const e=this.convertToGlobal({x:this.shadow.pos.x,y:this.shadow.pos.y});this.ctx.translate(e.x,e.y),this.ctx.rotate(Math.PI+this.shadow.angle+Math.PI/2);const i=this.ctx.createLinearGradient(0,0,this.shadow.width,0);0===this.shadow.direction?(this.ctx.translate(0,-100),i.addColorStop(0,"rgba(0, 0, 0, "+this.shadow.opacity+")"),i.addColorStop(1,"rgba(0, 0, 0, 0)")):(this.ctx.translate(-this.shadow.width,-100),i.addColorStop(0,"rgba(0, 0, 0, 0)"),i.addColorStop(1,"rgba(0, 0, 0, "+this.shadow.opacity+")")),this.ctx.clip(),this.ctx.fillStyle=i,this.ctx.fillRect(0,0,this.shadow.width,2*t.height),this.ctx.restore()}drawInnerShadow(){const t=this.getRect();this.ctx.save(),this.ctx.beginPath();const e=this.convertToGlobal({x:this.shadow.pos.x,y:this.shadow.pos.y}),i=this.convertRectToGlobal(this.pageRect);this.ctx.moveTo(i.topLeft.x,i.topLeft.y),this.ctx.lineTo(i.topRight.x,i.topRight.y),this.ctx.lineTo(i.bottomRight.x,i.bottomRight.y),this.ctx.lineTo(i.bottomLeft.x,i.bottomLeft.y),this.ctx.translate(e.x,e.y),this.ctx.rotate(Math.PI+this.shadow.angle+Math.PI/2);const s=3*this.shadow.width/4,n=this.ctx.createLinearGradient(0,0,s,0);0===this.shadow.direction?(this.ctx.translate(-s,-100),n.addColorStop(1,"rgba(0, 0, 0, "+this.shadow.opacity+")"),n.addColorStop(.9,"rgba(0, 0, 0, 0.05)"),n.addColorStop(.7,"rgba(0, 0, 0, "+this.shadow.opacity+")"),n.addColorStop(0,"rgba(0, 0, 0, 0)")):(this.ctx.translate(0,-100),n.addColorStop(0,"rgba(0, 0, 0, "+this.shadow.opacity+")"),n.addColorStop(.1,"rgba(0, 0, 0, 0.05)"),n.addColorStop(.3,"rgba(0, 0, 0, "+this.shadow.opacity+")"),n.addColorStop(1,"rgba(0, 0, 0, 0)")),this.ctx.clip(),this.ctx.fillStyle=n,this.ctx.fillRect(0,0,s,2*t.height),this.ctx.restore()}clear(){this.ctx.fillStyle="white",this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height)}}class p{constructor(t,e,i){this.touchPoint=null,this.swipeTimeout=250,this.onResize=()=>{this.update()},this.onMouseDown=t=>{if(this.checkTarget(t.target)){const e=this.getMousePos(t.clientX,t.clientY);this.app.startUserTouch(e),t.preventDefault()}},this.onTouchStart=t=>{if(this.checkTarget(t.target)&&t.changedTouches.length>0){const e=t.changedTouches[0],i=this.getMousePos(e.clientX,e.clientY);this.touchPoint={point:i,time:Date.now()},setTimeout(()=>{null!==this.touchPoint&&this.app.startUserTouch(i)},this.swipeTimeout),this.app.getSettings().mobileScrollSupport||t.preventDefault()}},this.onMouseUp=t=>{const e=this.getMousePos(t.clientX,t.clientY);this.app.userStop(e)},this.onMouseMove=t=>{const e=this.getMousePos(t.clientX,t.clientY);this.app.userMove(e,!1)},this.onTouchMove=t=>{if(t.changedTouches.length>0){const e=t.changedTouches[0],i=this.getMousePos(e.clientX,e.clientY);this.app.getSettings().mobileScrollSupport?(null!==this.touchPoint&&(Math.abs(this.touchPoint.point.x-i.x)>10||"read"!==this.app.getState())&&t.cancelable&&this.app.userMove(i,!0),"read"!==this.app.getState()&&t.preventDefault()):this.app.userMove(i,!0)}},this.onTouchEnd=t=>{if(t.changedTouches.length>0){const e=t.changedTouches[0],i=this.getMousePos(e.clientX,e.clientY);let s=!1;if(null!==this.touchPoint){const t=i.x-this.touchPoint.point.x,e=Math.abs(i.y-this.touchPoint.point.y);Math.abs(t)>this.swipeDistance&&e<2*this.swipeDistance&&Date.now()-this.touchPoint.time<this.swipeTimeout&&(t>0?this.app.flipPrev(this.touchPoint.point.y<this.app.getRender().getRect().height/2?"top":"bottom"):this.app.flipNext(this.touchPoint.point.y<this.app.getRender().getRect().height/2?"top":"bottom"),s=!0),this.touchPoint=null}this.app.userStop(i,s)}},this.parentElement=t,t.classList.add("stf__parent"),t.insertAdjacentHTML("afterbegin",'<div class="stf__wrapper"></div>'),this.wrapper=t.querySelector(".stf__wrapper"),this.app=e;const s=this.app.getSettings().usePortrait?1:2;t.style.minWidth=i.minWidth*s+"px",t.style.minHeight=i.minHeight+"px","fixed"===i.size&&(t.style.minWidth=i.width*s+"px",t.style.minHeight=i.height+"px"),i.autoSize&&(t.style.width="100%",t.style.maxWidth=2*i.maxWidth+"px"),t.style.display="block",window.addEventListener("resize",this.onResize,!1),this.swipeDistance=i.swipeDistance}destroy(){this.app.getSettings().useMouseEvents&&this.removeHandlers(),this.distElement.remove(),this.wrapper.remove()}getDistElement(){return this.distElement}getWrapper(){return this.wrapper}setOrientationStyle(t){this.wrapper.classList.remove("--portrait","--landscape"),"portrait"===t?(this.app.getSettings().autoSize&&(this.wrapper.style.paddingBottom=this.app.getSettings().height/this.app.getSettings().width*100+"%"),this.wrapper.classList.add("--portrait")):(this.app.getSettings().autoSize&&(this.wrapper.style.paddingBottom=this.app.getSettings().height/(2*this.app.getSettings().width)*100+"%"),this.wrapper.classList.add("--landscape")),this.update()}removeHandlers(){window.removeEventListener("resize",this.onResize),this.distElement.removeEventListener("mousedown",this.onMouseDown),this.distElement.removeEventListener("touchstart",this.onTouchStart),window.removeEventListener("mousemove",this.onMouseMove),window.removeEventListener("touchmove",this.onTouchMove),window.removeEventListener("mouseup",this.onMouseUp),window.removeEventListener("touchend",this.onTouchEnd)}setHandlers(){window.addEventListener("resize",this.onResize,!1),this.app.getSettings().useMouseEvents&&(this.distElement.addEventListener("mousedown",this.onMouseDown),this.distElement.addEventListener("touchstart",this.onTouchStart),window.addEventListener("mousemove",this.onMouseMove),window.addEventListener("touchmove",this.onTouchMove,{passive:!this.app.getSettings().mobileScrollSupport}),window.addEventListener("mouseup",this.onMouseUp),window.addEventListener("touchend",this.onTouchEnd))}getMousePos(t,e){const i=this.distElement.getBoundingClientRect();return{x:t-i.left,y:e-i.top}}checkTarget(t){return!this.app.getSettings().clickEventForward||!["a","button"].includes(t.tagName.toLowerCase())}}class c extends p{constructor(t,e,i,s){super(t,e,i),this.wrapper.insertAdjacentHTML("afterbegin",'<div class="stf__block"></div>'),this.distElement=t.querySelector(".stf__block"),this.items=s;for(const t of s)this.distElement.appendChild(t);this.setHandlers()}clear(){for(const t of this.items)this.parentElement.appendChild(t)}updateItems(t){this.removeHandlers(),this.distElement.innerHTML="";for(const e of t)this.distElement.appendChild(e);this.items=t,this.setHandlers()}update(){this.app.getRender().update()}}class u extends p{constructor(t,e,i){super(t,e,i),this.wrapper.innerHTML='<canvas class="stf__canvas"></canvas>',this.canvas=t.querySelectorAll("canvas")[0],this.distElement=this.canvas,this.resizeCanvas(),this.setHandlers()}resizeCanvas(){const t=getComputedStyle(this.canvas),e=parseInt(t.getPropertyValue("width"),10),i=parseInt(t.getPropertyValue("height"),10);this.canvas.width=e,this.canvas.height=i}getCanvas(){return this.canvas}update(){this.resizeCanvas(),this.app.getRender().update()}}class w extends l{constructor(t,e,i){super(t,e),this.outerShadow=null,this.innerShadow=null,this.hardShadow=null,this.hardInnerShadow=null,this.element=i,this.createShadows()}createShadows(){this.element.insertAdjacentHTML("beforeend",'<div class="stf__outerShadow"></div>\n             <div class="stf__innerShadow"></div>\n             <div class="stf__hardShadow"></div>\n             <div class="stf__hardInnerShadow"></div>'),this.outerShadow=this.element.querySelector(".stf__outerShadow"),this.innerShadow=this.element.querySelector(".stf__innerShadow"),this.hardShadow=this.element.querySelector(".stf__hardShadow"),this.hardInnerShadow=this.element.querySelector(".stf__hardInnerShadow")}clearShadow(){super.clearShadow(),this.outerShadow.style.cssText="display: none",this.innerShadow.style.cssText="display: none",this.hardShadow.style.cssText="display: none",this.hardInnerShadow.style.cssText="display: none"}reload(){this.element.querySelector(".stf__outerShadow")||this.createShadows()}drawHardInnerShadow(){const t=this.getRect(),e=this.shadow.progress>100?200-this.shadow.progress:this.shadow.progress;let i=(100-e)*(2.5*t.pageWidth)/100+20;i>t.pageWidth&&(i=t.pageWidth);let s=`\n            display: block;\n            z-index: ${(this.getSettings().startZIndex+5).toString(10)};\n            width: ${i}px;\n            height: ${t.height}px;\n            background: linear-gradient(to right,\n                rgba(0, 0, 0, ${this.shadow.opacity*e/100}) 5%,\n                rgba(0, 0, 0, 0) 100%);\n            left: ${t.left+t.width/2}px;\n            transform-origin: 0 0;\n        `;s+=0===this.getDirection()&&this.shadow.progress>100||1===this.getDirection()&&this.shadow.progress<=100?"transform: translate3d(0, 0, 0);":"transform: translate3d(0, 0, 0) rotateY(180deg);",this.hardInnerShadow.style.cssText=s}drawHardOuterShadow(){const t=this.getRect();let e=(100-(this.shadow.progress>100?200-this.shadow.progress:this.shadow.progress))*(2.5*t.pageWidth)/100+20;e>t.pageWidth&&(e=t.pageWidth);let i=`\n            display: block;\n            z-index: ${(this.getSettings().startZIndex+4).toString(10)};\n            width: ${e}px;\n            height: ${t.height}px;\n            background: linear-gradient(to left, rgba(0, 0, 0, ${this.shadow.opacity}) 5%, rgba(0, 0, 0, 0) 100%);\n            left: ${t.left+t.width/2}px;\n            transform-origin: 0 0;\n        `;i+=0===this.getDirection()&&this.shadow.progress>100||1===this.getDirection()&&this.shadow.progress<=100?"transform: translate3d(0, 0, 0) rotateY(180deg);":"transform: translate3d(0, 0, 0);",this.hardShadow.style.cssText=i}drawInnerShadow(){const t=this.getRect(),e=3*this.shadow.width/4,i=0===this.getDirection()?e:0,s=0===this.getDirection()?"to left":"to right",n=this.convertToGlobal(this.shadow.pos),r=this.shadow.angle+3*Math.PI/2,o=[this.pageRect.topLeft,this.pageRect.topRight,this.pageRect.bottomRight,this.pageRect.bottomLeft];let a="polygon( ";for(const t of o){let e=1===this.getDirection()?{x:-t.x+this.shadow.pos.x,y:t.y-this.shadow.pos.y}:{x:t.x-this.shadow.pos.x,y:t.y-this.shadow.pos.y};e=h.GetRotatedPoint(e,{x:i,y:100},r),a+=e.x+"px "+e.y+"px, "}a=a.slice(0,-2),a+=")";const g=`\n            display: block;\n            z-index: ${(this.getSettings().startZIndex+10).toString(10)};\n            width: ${e}px;\n            height: ${2*t.height}px;\n            background: linear-gradient(${s},\n                rgba(0, 0, 0, ${this.shadow.opacity}) 5%,\n                rgba(0, 0, 0, 0.05) 15%,\n                rgba(0, 0, 0, ${this.shadow.opacity}) 35%,\n                rgba(0, 0, 0, 0) 100%);\n            transform-origin: ${i}px 100px;\n            transform: translate3d(${n.x-i}px, ${n.y-100}px, 0) rotate(${r}rad);\n            clip-path: ${a};\n            -webkit-clip-path: ${a};\n        `;this.innerShadow.style.cssText=g}drawOuterShadow(){const t=this.getRect(),e=this.convertToGlobal({x:this.shadow.pos.x,y:this.shadow.pos.y}),i=this.shadow.angle+3*Math.PI/2,s=1===this.getDirection()?this.shadow.width:0,n=0===this.getDirection()?"to right":"to left",r=[{x:0,y:0},{x:t.pageWidth,y:0},{x:t.pageWidth,y:t.height},{x:0,y:t.height}];let o="polygon( ";for(const t of r)if(null!==t){let e=1===this.getDirection()?{x:-t.x+this.shadow.pos.x,y:t.y-this.shadow.pos.y}:{x:t.x-this.shadow.pos.x,y:t.y-this.shadow.pos.y};e=h.GetRotatedPoint(e,{x:s,y:100},i),o+=e.x+"px "+e.y+"px, "}o=o.slice(0,-2),o+=")";const a=`\n            display: block;\n            z-index: ${(this.getSettings().startZIndex+10).toString(10)};\n            width: ${this.shadow.width}px;\n            height: ${2*t.height}px;\n            background: linear-gradient(${n}, rgba(0, 0, 0, ${this.shadow.opacity}), rgba(0, 0, 0, 0));\n            transform-origin: ${s}px 100px;\n            transform: translate3d(${e.x-s}px, ${e.y-100}px, 0) rotate(${i}rad);\n            clip-path: ${o};\n            -webkit-clip-path: ${o};\n        `;this.outerShadow.style.cssText=a}drawLeftPage(){"portrait"!==this.orientation&&null!==this.leftPage&&(1===this.direction&&null!==this.flippingPage&&"hard"===this.flippingPage.getDrawingDensity()?(this.leftPage.getElement().style.zIndex=(this.getSettings().startZIndex+5).toString(10),this.leftPage.setHardDrawingAngle(180+this.flippingPage.getHardAngle()),this.leftPage.draw(this.flippingPage.getDrawingDensity())):this.leftPage.simpleDraw(0))}drawRightPage(){null!==this.rightPage&&(0===this.direction&&null!==this.flippingPage&&"hard"===this.flippingPage.getDrawingDensity()?(this.rightPage.getElement().style.zIndex=(this.getSettings().startZIndex+5).toString(10),this.rightPage.setHardDrawingAngle(180+this.flippingPage.getHardAngle()),this.rightPage.draw(this.flippingPage.getDrawingDensity())):this.rightPage.simpleDraw(1))}drawBottomPage(){if(null===this.bottomPage)return;const t=null!=this.flippingPage?this.flippingPage.getDrawingDensity():null;"portrait"===this.orientation&&1===this.direction||(this.bottomPage.getElement().style.zIndex=(this.getSettings().startZIndex+3).toString(10),this.bottomPage.draw(t))}drawFrame(){this.clear(),this.drawLeftPage(),this.drawRightPage(),this.drawBottomPage(),null!=this.flippingPage&&(this.flippingPage.getElement().style.zIndex=(this.getSettings().startZIndex+5).toString(10),this.flippingPage.draw()),null!=this.shadow&&null!==this.flippingPage&&("soft"===this.flippingPage.getDrawingDensity()?(this.drawOuterShadow(),this.drawInnerShadow()):(this.drawHardOuterShadow(),this.drawHardInnerShadow()))}clear(){for(const t of this.app.getPageCollection().getPages())t!==this.leftPage&&t!==this.rightPage&&t!==this.flippingPage&&t!==this.bottomPage&&(t.getElement().style.cssText="display: none"),t.getTemporaryCopy()!==this.flippingPage&&t.hideTemporaryCopy()}update(){super.update(),null!==this.rightPage&&this.rightPage.setOrientation(1),null!==this.leftPage&&this.leftPage.setOrientation(0)}}class x{constructor(){this._default={startPage:0,size:"fixed",width:0,height:0,minWidth:0,maxWidth:0,minHeight:0,maxHeight:0,drawShadow:!0,flippingTime:1e3,usePortrait:!0,startZIndex:0,autoSize:!0,maxShadowOpacity:1,showCover:!1,mobileScrollSupport:!0,swipeDistance:30,clickEventForward:!0,useMouseEvents:!0,showPageCorners:!0,disableFlipByClick:!1}}getSettings(t){const e=this._default;if(Object.assign(e,t),"stretch"!==e.size&&"fixed"!==e.size)throw new Error('Invalid size type. Available only "fixed" and "stretch" value');if(e.width<=0||e.height<=0)throw new Error("Invalid width or height");if(e.flippingTime<=0)throw new Error("Invalid flipping time");return"stretch"===e.size?(e.minWidth<=0&&(e.minWidth=100),e.maxWidth<e.minWidth&&(e.maxWidth=2e3),e.minHeight<=0&&(e.minHeight=100),e.maxHeight<e.minHeight&&(e.maxHeight=2e3)):(e.minWidth=e.width,e.maxWidth=e.width,e.minHeight=e.height,e.maxHeight=e.height),e}}!function(t,e){void 0===e&&(e={});var i=e.insertAt;if(t&&"undefined"!=typeof document){var s=document.head||document.getElementsByTagName("head")[0],n=document.createElement("style");n.type="text/css","top"===i&&s.firstChild?s.insertBefore(n,s.firstChild):s.appendChild(n),n.styleSheet?n.styleSheet.cssText=t:n.appendChild(document.createTextNode(t))}}(".stf__parent {\n  position: relative;\n  display: block;\n  box-sizing: border-box;\n  transform: translateZ(0);\n\n  -ms-touch-action: pan-y;\n  touch-action: pan-y;\n}\n\n.sft__wrapper {\n  position: relative;\n  width: 100%;\n  box-sizing: border-box;\n}\n\n.stf__parent canvas {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n}\n\n.stf__block {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  perspective: 2000px;\n}\n\n.stf__item {\n  display: none;\n  position: absolute;\n  transform-style: preserve-3d;\n}\n\n.stf__outerShadow {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n\n.stf__innerShadow {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n\n.stf__hardShadow {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n\n.stf__hardInnerShadow {\n  position: absolute;\n  left: 0;\n  top: 0;\n}");t.PageFlip=class extends class{constructor(){this.events=new Map}on(t,e){return this.events.has(t)?this.events.get(t).push(e):this.events.set(t,[e]),this}off(t){this.events.delete(t)}trigger(t,e,i=null){if(this.events.has(t))for(const s of this.events.get(t))s({data:i,object:e})}}{constructor(t,e){super(),this.isUserTouch=!1,this.isUserMove=!1,this.setting=null,this.pages=null,this.setting=(new x).getSettings(e),this.block=t}destroy(){this.ui.destroy(),this.block.remove()}update(){this.render.update(),this.pages.show()}loadFromImages(t){this.ui=new u(this.block,this,this.setting);const e=this.ui.getCanvas();this.render=new d(this,this.setting,e),this.flipController=new g(this.render,this),this.pages=new n(this,this.render,t),this.pages.load(),this.render.start(),this.pages.show(this.setting.startPage),setTimeout(()=>{this.ui.update(),this.trigger("init",this,{page:this.setting.startPage,mode:this.render.getOrientation()})},1)}loadFromHTML(t){this.ui=new c(this.block,this,this.setting,t),this.render=new w(this,this.setting,this.ui.getDistElement()),this.flipController=new g(this.render,this),this.pages=new o(this,this.render,this.ui.getDistElement(),t),this.pages.load(),this.render.start(),this.pages.show(this.setting.startPage),setTimeout(()=>{this.ui.update(),this.trigger("init",this,{page:this.setting.startPage,mode:this.render.getOrientation()})},1)}updateFromImages(t){const e=this.pages.getCurrentPageIndex();this.pages.destroy(),this.pages=new n(this,this.render,t),this.pages.load(),this.pages.show(e),this.trigger("update",this,{page:e,mode:this.render.getOrientation()})}updateFromHtml(t){const e=this.pages.getCurrentPageIndex();this.pages.destroy(),this.pages=new o(this,this.render,this.ui.getDistElement(),t),this.pages.load(),this.ui.updateItems(t),this.render.reload(),this.pages.show(e),this.trigger("update",this,{page:e,mode:this.render.getOrientation()})}clear(){this.pages.destroy(),this.ui.clear()}turnToPrevPage(){this.pages.showPrev()}turnToNextPage(){this.pages.showNext()}turnToPage(t){this.pages.show(t)}flipNext(t="top"){this.flipController.flipNext(t)}flipPrev(t="top"){this.flipController.flipPrev(t)}flip(t,e="top"){this.flipController.flipToPage(t,e)}updateState(t){this.trigger("changeState",this,t)}updatePageIndex(t){this.trigger("flip",this,t)}updateOrientation(t){this.ui.setOrientationStyle(t),this.update(),this.trigger("changeOrientation",this,t)}getPageCount(){return this.pages.getPageCount()}getCurrentPageIndex(){return this.pages.getCurrentPageIndex()}getPage(t){return this.pages.getPage(t)}getRender(){return this.render}getFlipController(){return this.flipController}getOrientation(){return this.render.getOrientation()}getBoundsRect(){return this.render.getRect()}getSettings(){return this.setting}getUI(){return this.ui}getState(){return this.flipController.getState()}getPageCollection(){return this.pages}startUserTouch(t){this.mousePosition=t,this.isUserTouch=!0,this.isUserMove=!1}userMove(t,e){this.isUserTouch||e||!this.setting.showPageCorners?this.isUserTouch&&h.GetDistanceBetweenTwoPoint(this.mousePosition,t)>5&&(this.isUserMove=!0,this.flipController.fold(t)):this.flipController.showCorner(t)}userStop(t,e=!1){this.isUserTouch&&(this.isUserTouch=!1,e||(this.isUserMove?this.flipController.stopMove():this.flipController.flip(t)))}},Object.defineProperty(t,"__esModule",{value:!0})}));
-</script>
+<div id="hero">
+  <h1>เบญจมราชาลัย 2568</h1>
+  <p id="shelf-count"></p>
+</div>
+
+<div id="shelf"></div>
+
+<div id="footer">Exported with PaperOS &middot; Open each book folder's <code>index.html</code> to read offline</div>
 
 <script>
-// ── Injected data ─────────────────────────────────────────────────────────────
-const BOOK_CONFIG = {"id":"mq8pbiugbj6go","name":"merged.pdf","totalPages":100,"createdAt":"2026-06-10T23:39:16.361Z","widgets":[{"type":"image","url":"./assets/g-h-002-02_mqaghnxe.png","label":"g-h-002-02_mqaghnxe","pageIndex":3,"x":14.152044998972038,"y":9.791840452055695,"width":58.07016473067434,"height":9.033727095335774,"opacity":100,"animation":"slideRight","id":"w-1781240320962-ltai"},{"type":"image","url":"./assets/g-h-002-01_mqaghjlr.png","label":"g-h-002-01_mqaghjlr","pageIndex":3,"x":1.976601048519761,"y":7.929645900619765,"width":19.473684210526315,"height":13.999584915473692,"opacity":100,"animation":"bounce","id":"w-1781240387313-c6yh","animationRepeat":3},{"type":"image","url":"./assets/g-h-012-02_mqagn0zq.png","label":"g-h-012-02_mqagn0zq","pageIndex":9,"x":17.181309750205617,"y":10.205666199298769,"width":53.68417840254934,"height":10.482095899528627,"opacity":100,"animation":"slideRight","id":"w-1781240578291-3jnj"},{"type":"image","url":"./assets/g-h-012-01_mqagmwl6.png","label":"g-h-012-01_mqagmwl6","pageIndex":9,"x":3.508782637746711,"y":6.895100002182265,"width":22.690060264185856,"height":16.48251666703037,"opacity":100,"animation":"bounce","id":"w-1781240650145-4jaj","animationDuration":1,"animationRepeat":3},{"type":"image","url":"./assets/g-h-010-02_mqagr1fq.png","label":"g-h-010-02_mqagr1fq","pageIndex":13,"x":13.964965820312525,"y":12.067869275197861,"width":42.57308156866777,"height":7.171524019436681,"opacity":100,"animation":"slideRight","id":"w-1781240756981-aeo9","animationDuration":1},{"type":"image","url":"./assets/g-h-010-01_mqagqvng.png","label":"g-h-010-01_mqagqvng","pageIndex":13,"x":5.777774208470419,"y":9.998760429396535,"width":14.21051025390625,"height":10.895918805283982,"opacity":100,"animation":"bounce","id":"w-1781240782133-mria","animationDuration":1,"animationRepeat":3},{"type":"image","url":"./assets/g-h-013-02_mqagtkly.png","label":"g-h-013-02_mqagtkly","pageIndex":30,"x":16.011699475740155,"y":9.791843293543415,"width":51.345022101151315,"height":7.378435472314358,"opacity":100,"animation":"slideRight","id":"w-1781240875259-59pp","animationDuration":1,"animationRepeat":1},{"type":"image","url":"./assets/g-h-013-01_mqagtklt.png","label":"g-h-013-01_mqagtklt","pageIndex":30,"x":8.771940532483551,"y":8.343463123399676,"width":12.163728412828947,"height":10.689013035381747,"opacity":100,"animation":"bounce","id":"w-1781240880045-3ham","animationRepeat":3,"animationDuration":1},{"type":"image","url":"./assets/g-003-02_mqagx1ig.png","label":"g-003-02_mqagx1ig","pageIndex":33,"x":25.660827636718775,"y":11.860963505295627,"width":12.456134996916118,"height":8.206081283825066,"opacity":100,"animation":"zoomIn","id":"w-1781241042397-3dxa"},{"type":"image","url":"./assets/g-002-03_mqagx1ik.png","label":"g-002-03_mqagx1ik","pageIndex":33,"x":7.532181589226998,"y":4.205251114772465,"width":30,"height":20,"opacity":100,"animation":"slideLeft","id":"w-1781241072049-s9k8","animationDuration":1.1},{"type":"image","url":"./assets/g-003-01_mqagx1iq.png","label":"g-003-01_mqagx1iq","pageIndex":33,"x":37.94147049753292,"y":10.619489105054122,"width":52.514616313733555,"height":7.792258378069712,"opacity":100,"animation":"slideRight","id":"w-1781241074519-15m6","animationDuration":1},{"type":"image","url":"./assets/g-008-04_mqah0jmo.png","label":"g-008-04_mqah0jmo","pageIndex":36,"x":29.754407380756604,"y":11.654040686467065,"width":10.526315789473683,"height":8.826815642458097,"opacity":100,"animation":"fadeIn","id":"w-1781241224363-tihx","animationDuration":0.9},{"type":"image","url":"./assets/g-008-05_mqah0jnr.png","label":"g-008-05_mqah0jnr","pageIndex":36,"x":8.771940532483551,"y":4.825985473405496,"width":30,"height":20,"opacity":100,"animation":"slideLeft","id":"w-1781241240299-nrvp","animationDuration":1},{"type":"image","url":"./assets/g-008-01_mqah0jnl.png","label":"g-008-01_mqah0jnl","pageIndex":36,"x":38.81870631167765,"y":7.308917224962176,"width":35.847971062911185,"height":10.689013035381747,"opacity":100,"animation":"slideRight","id":"w-1781241267058-srr2","animationDuration":1},{"type":"image","url":"./assets/g-008-03_mqah0jmn.png","label":"g-008-03_mqah0jmn","pageIndex":36,"x":71.85967053865134,"y":8.136557353497443,"width":10.701743678042764,"height":8.412998419678184,"opacity":100,"animation":"pulse","id":"w-1781241281312-kwfd","animationMode":"loop"},{"type":"image","url":"./assets/g-007-03_mqah4xvh.png","label":"g-007-03_mqah4xvh","pageIndex":44,"x":30.63151469983555,"y":11.240223463687153,"width":11.871370014391447,"height":9.447544318115684,"opacity":100,"animation":"blurIn","id":"w-1781241406858-yhn5","animationDuration":1.1},{"type":"image","url":"./assets/g-007-02_mqah4xvd.png","label":"g-007-02_mqah4xvd","pageIndex":44,"x":63.08773000616779,"y":12.06786359222242,"width":10.526315789473683,"height":7.171524019436681,"opacity":100,"animation":"shake","id":"w-1781241413705-nd7e","animationRepeat":3},{"type":"image","url":"./assets/g-007-04_mqah4xvo.png","label":"g-007-04_mqah4xvo","pageIndex":44,"x":8.116962633634893,"y":5.653631284916203,"width":30,"height":20,"opacity":100,"animation":"slideLeft","id":"w-1781241416310-zdg3","animationDuration":1},{"type":"image","url":"./assets/g-007-01_mqah4xv6.png","label":"g-007-01_mqah4xv6","pageIndex":44,"x":38.818738435444104,"y":7.102000089109057,"width":37.89473684210527,"height":10.689013035381747,"opacity":100,"animation":"bounce","id":"w-1781241418348-tr07","animationDuration":1.2,"animationRepeat":2},{"type":"image","url":"./assets/g-002-02_mqah8l8w.png","label":"g-002-02_mqah8l8w","pageIndex":50,"x":28.877171566611864,"y":3.7914338919925537,"width":53.09942948190789,"height":22.89674897433659,"opacity":100,"animation":"fadeIn","id":"w-1781241571355-oj7x"},{"type":"image","url":"./assets/g-002-03_mqah8l8t.png","label":"g-002-03_mqah8l8t","pageIndex":50,"x":8.116962633634893,"y":5.032896926283173,"width":27.660843698601973,"height":19.379265641366967,"opacity":100,"animation":"slideLeft","id":"w-1781241573638-41x8","animationDuration":0.9},{"type":"image","url":"./assets/g-002-01_mqah8l8v.png","label":"g-002-01_mqah8l8v","pageIndex":50,"x":35.309923673930946,"y":7.722745813692973,"width":42.86550421463816,"height":11.516658846892454,"opacity":100,"animation":"slideUp","id":"w-1781241576002-7d5l","animationDuration":1},{"type":"image","url":"./assets/g-010-02_mqahch2n.png","label":"g-010-02_mqahch2n","pageIndex":55,"x":77.30995579769737,"y":9.171108934910384,"width":16.5496826171875,"height":10.689013035381747,"opacity":100,"animation":"fadeIn","id":"w-1781241757725-71o0"},{"type":"image","url":"./assets/g-010-03_mqahch3m.png","label":"g-010-03_mqahch3m","pageIndex":55,"x":23.90640419407897,"y":7.515822994864411,"width":18.011683413856908,"height":12.34429897542772,"opacity":100,"animation":"fadeIn","id":"w-1781241759785-lle8"},{"type":"image","url":"./assets/g-010-04_mqahch20.png","label":"g-010-04_mqahch20","pageIndex":55,"x":6.654977898848678,"y":4.825991156380939,"width":30,"height":20,"opacity":100,"animation":"slideLeft","id":"w-1781241761822-wx9u"},{"type":"image","url":"./assets/g-010-01_mqahch2j.png","label":"g-010-01_mqahch2j","pageIndex":55,"x":33.84793893914476,"y":7.929645900619765,"width":48.71344315378289,"height":9.654461453968805,"opacity":100,"animation":"slideRight","id":"w-1781241764126-4gyv"},{"type":"image","url":"./assets/g-004-02_mqahgog8.png","label":"g-004-02_mqahgog8","pageIndex":65,"x":65.71927682976975,"y":3.9983453448702306,"width":17.426886307565788,"height":9.24063854821345,"opacity":100,"animation":"slideUp","id":"w-1781241952632-rsa5"},{"type":"image","url":"./assets/g-004-03_mqahgogb.png","label":"g-004-03_mqahgogb","pageIndex":65,"x":25.953202097039497,"y":10.619489105054122,"width":16.549714740953945,"height":9.861361540895597,"opacity":100,"animation":"none","id":"w-1781241954646-48p2"},{"type":"image","url":"./assets/g-004-04_mqahgogm.png","label":"g-004-04_mqahgogm","pageIndex":65,"x":7.532181589226967,"y":5.23980837916085,"width":30,"height":20,"opacity":100,"animation":"slideLeft","id":"w-1781241971702-9sz7"},{"type":"image","url":"./assets/g-004-01_mqahgofo.png","label":"g-004-01_mqahgofo","pageIndex":65,"x":39.69589394017272,"y":4.619074020527819,"width":45.204660516036185,"height":15.241053632739753,"opacity":100,"animation":"slideRight","id":"w-1781241982378-vikt"},{"type":"image","url":"./assets/g-005-02_mqahjmhg.png","label":"g-005-02_mqahjmhg","pageIndex":71,"x":26.83042184930101,"y":12.68859795085545,"width":13.333338687294408,"height":9.447544318115684,"opacity":100,"animation":"pulse","id":"w-1781242096166-3lsr"},{"type":"image","url":"./assets/g-005-03_mqahjmi2.png","label":"g-005-03_mqahjmi2","pageIndex":71,"x":70.69006026418589,"y":3.1707052163349654,"width":14.210558439555921,"height":7.585346925192035,"opacity":100,"animation":"pulse","id":"w-1781242106976-oxla"},{"type":"image","url":"./assets/g-005-04_mqahjmid.png","label":"g-005-04_mqahjmid","pageIndex":71,"x":73.32165527343753,"y":12.895509403733127,"width":10.526315789473683,"height":9.447544318115684,"opacity":100,"animation":"pulse","id":"w-1781242126562-0e4x"},{"type":"image","url":"./assets/g-005-05_mqahjmit.png","label":"g-005-05_mqahjmit","pageIndex":71,"x":6.362587376644731,"y":5.653631284916203,"width":30,"height":20,"opacity":100,"animation":"slideLeft","id":"w-1781242134254-mitn"},{"type":"image","url":"./assets/g-005-01_mqahjmir.png","label":"g-005-01_mqahjmir","pageIndex":71,"x":39.98830052425989,"y":7.655701024572277,"width":41.40348735608553,"height":8.619909872555862,"opacity":100,"animation":"slideRight","id":"w-1781242141086-noqi"},{"type":"image","url":"./assets/g-h-008-02_mqahmvy3.png","label":"g-h-008-02_mqahmvy3","pageIndex":74,"x":16.011667351973706,"y":10.205666199298769,"width":50.46781841077303,"height":10.27518444665095,"opacity":100,"animation":"slideRight","id":"w-1781242240216-bujs"},{"type":"image","url":"./assets/g-h-008-01_mqahmvxy.png","label":"g-h-008-01_mqahmvxy","pageIndex":74,"x":6.140361585115132,"y":8.136557353497443,"width":15.38012052837171,"height":14.8272307269844,"opacity":100,"animation":"bounce","id":"w-1781242242302-lymm","animationDuration":1,"animationRepeat":3},{"type":"image","url":"./assets/g-009-03_mqahqfy6.png","label":"g-009-03_mqahqfy6","pageIndex":82,"x":21.567247892680946,"y":10.412577652176445,"width":12.74854158100329,"height":10.48210158250407,"opacity":100,"animation":"pulse","id":"w-1781242411334-t1li","animationDuration":0.9},{"type":"image","url":"./assets/g-009-02_mqahqfxh.png","label":"g-009-02_mqahqfxh","pageIndex":82,"x":65.42688630756581,"y":9.58493752364118,"width":12.456151058799342,"height":9.24063854821345,"opacity":100,"animation":"fadeIn","id":"w-1781242413344-e3cc","animationDuration":1},{"type":"image","url":"./assets/g-009-04_mqahqfy2.png","label":"g-009-04_mqahqfy2","pageIndex":82,"x":8.701743678042787,"y":10.619489105054122,"width":12.74854158100329,"height":7.999169830947389,"opacity":100,"animation":"slideLeft","id":"w-1781242415635-8t6b","animationDuration":1},{"type":"image","url":"./assets/g-009-01_mqahqfyw.png","label":"g-009-01_mqahqfyw","pageIndex":82,"x":29.754375256990155,"y":10.826414765370405,"width":36.432752107319075,"height":4.8955094037331195,"opacity":100,"animation":"slideRight","id":"w-1781242417750-wok1","animationDuration":1},{"type":"image","url":"./assets/g-001-01_mqaht8ae.png","label":"g-001-01_mqaht8ae","pageIndex":88,"x":3.216456363075658,"y":3.103666110189711,"width":86.72517475328947,"height":24.345123461504883,"opacity":100,"animation":"pulse","id":"w-1781242538538-xn5q","animationDuration":1},{"type":"image","url":"./assets/g-001-02_mqaht8bo.png","label":"g-001-02_mqaht8bo","pageIndex":88,"x":9.578947368421078,"y":8.550385942228237,"width":12.456118935032896,"height":10.275195812601835,"opacity":100,"animation":"slideLeft","id":"w-1781242567118-peg8","animationDuration":1},{"type":"image","url":"./assets/g-001-03_mqaht8bp.png","label":"g-001-03_mqaht8bp","pageIndex":88,"x":50.51464843750002,"y":8.550385942228237,"width":10.526315789473683,"height":7.999175513922831,"opacity":100,"animation":"bounce","id":"w-1781242605062-yx45","animationRepeat":3},{"type":"image","url":"./assets/g-001-04_mqaht8c2.png","label":"g-001-04_mqaht8c2","pageIndex":88,"x":58.11699475740134,"y":8.343463123399676,"width":10.526315789473683,"height":8.206086966800507,"opacity":100,"animation":"bounce","id":"w-1781242608720-fa2v","animationDuration":0.9,"animationRepeat":3},{"type":"image","url":"./assets/g-001-05_mqaht8c3.png","label":"g-001-05_mqaht8c3","pageIndex":88,"x":64.54971474095397,"y":7.929640217644322,"width":11.871337890625,"height":8.826815642458097,"opacity":100,"animation":"bounce","id":"w-1781242612258-8zsu","animationDuration":1.1,"animationRepeat":3},{"type":"image","url":"./assets/g-001-06_mqaht8co.png","label":"g-001-06_mqaht8co","pageIndex":88,"x":73.32165527343753,"y":8.757303078081357,"width":10.526315789473683,"height":7.999181196898274,"opacity":100,"animation":"bounce","id":"w-1781242613924-vbrs","animationDuration":1.3,"animationRepeat":3},{"type":"image","url":"./assets/m-01_mqai7lyf.png","label":"m-01_mqai7lyf","pageIndex":1,"x":8.116962633634893,"y":10.619489105054122,"width":35.26319001850329,"height":5.9300553021706195,"opacity":100,"animation":"shake","id":"w-1781243262422-00wu","targetPage":3,"animationDuration":1,"animationRepeat":2},{"type":"image","url":"./assets/m-02_mqai7lyh.png","label":"m-02_mqai7lyh","pageIndex":1,"x":47.29820813630759,"y":10.412577652176445,"width":34.9707673725329,"height":5.516249445341593,"opacity":100,"animation":"shake","id":"w-1781243274463-rr44","animationDuration":1.1,"animationRepeat":2},{"type":"image","url":"./assets/m-03_mqai7lyi.png","label":"m-03_mqai7lyi","pageIndex":1,"x":6.947384482935879,"y":15.999164147971953,"width":36.43271998355263,"height":8.4129870537273,"opacity":100,"animation":"shake","id":"w-1781243296695-01bq","animationDuration":1,"animationRepeat":2},{"type":"image","url":"./assets/m-04_mqai7lyj.png","label":"m-04_mqai7lyj","pageIndex":1,"x":45.73097630550987,"y":16.20608128382507,"width":39.94153474506579,"height":7.378435472314358,"opacity":100,"animation":"shake","id":"w-1781243367181-i36h","animationDuration":1,"animationRepeat":2},{"type":"image","url":"./assets/m-05_mqai7lze.png","label":"m-05_mqai7lze","pageIndex":1,"x":7.532181589226998,"y":23.447953719666554,"width":38.18715948807566,"height":6.964618249534446,"opacity":100,"animation":"shake","id":"w-1781243408101-g8by","animationDuration":1,"animationRepeat":2},{"type":"image","url":"./assets/m-06_mqai7lzg.png","label":"m-06_mqai7lzg","pageIndex":1,"x":47.59067896792766,"y":23.24104794976432,"width":42.28072317023026,"height":6.550801026754535,"opacity":100,"animation":"shake","id":"w-1781243431571-2cc3","animationDuration":1,"animationRepeat":2},{"type":"image","url":"./assets/m-07_mqai7m2s.png","label":"m-07_mqai7m2s","pageIndex":1,"x":6.947384482935879,"y":30.68983752145892,"width":36.43281635485197,"height":6.136978120999181,"opacity":100,"animation":"shake","id":"w-1781243468525-nlf2","animationDuration":1.1,"animationRepeat":2},{"type":"image","url":"./assets/m-09_mqai7m3j.png","label":"m-09_mqai7m3j","pageIndex":1,"x":6.654961836965484,"y":37.72480418739816,"width":35.847971062911185,"height":5.930066668121505,"opacity":100,"animation":"shake","id":"w-1781243600537-wu0a","animationDuration":1.2,"animationRepeat":2},{"type":"image","url":"./assets/m-08_mqai7m3j.png","label":"m-08_mqai7m3j","pageIndex":1,"x":50.222257915296076,"y":30.27602598165445,"width":39.64914422286184,"height":6.757706796656769,"opacity":100,"animation":"shake","id":"w-1781243607596-70m8","animationDuration":1.1,"animationRepeat":2},{"type":"image","url":"./assets/m-10_mqai7m3k.png","label":"m-10_mqai7m3k","pageIndex":1,"x":49.92978708367601,"y":37.104069828765134,"width":39.836287649054256,"height":6.757712479632212,"opacity":100,"animation":"shake","id":"w-1781243660619-omqm","animationDuration":1.2,"animationRepeat":2},{"type":"image","url":"./assets/m-11_mqai7m49.png","label":"m-11_mqai7m49","pageIndex":1,"x":8.994166324013182,"y":43.93213640777759,"width":34.970751310649675,"height":6.136972438023739,"opacity":100,"animation":"shake","id":"w-1781243692503-y50s","animationDuration":1.3,"animationRepeat":2},{"type":"image","url":"./assets/m-12_mqai7m4l.png","label":"m-12_mqai7m4l","pageIndex":1,"x":47.005833675986864,"y":43.725219271924466,"width":42.57311369243421,"height":6.343883890901416,"opacity":100,"animation":"shake","id":"w-1781243770403-wd3u","animationDuration":1.3,"animationRepeat":2},{"type":"image","url":"./assets/m-13_mqai7m8d.png","label":"m-13_mqai7m8d","pageIndex":1,"x":6.362555252878313,"y":49.72563435645077,"width":38.18711130242598,"height":6.550789660803651,"opacity":100,"animation":"shake","id":"w-1781243880839-uxw0","animationDuration":1.4,"animationRepeat":2},{"type":"image","url":"./assets/m-15_mqai7m8g.png","label":"m-15_mqai7m8g","pageIndex":1,"x":8.116978695518116,"y":55.5191379880994,"width":37.30995579769737,"height":6.550795343779092,"opacity":100,"animation":"shake","id":"w-1781243904183-a04t","animationDuration":1.4,"animationRepeat":2},{"type":"image","url":"./assets/m-14_mqai7m8h.png","label":"m-14_mqai7m8h","pageIndex":1,"x":46.71344315378292,"y":49.10489999781774,"width":35.263173956620065,"height":6.757706796656769,"opacity":100,"animation":"shake","id":"w-1781244032773-bhi0","animationDuration":1.4,"animationRepeat":2},{"type":"image","url":"./assets/m-16_mqai7m8i.png","label":"m-16_mqai7m8i","pageIndex":1,"x":51.391820004111864,"y":54.89840931244181,"width":34.0935636821546,"height":6.964623932509889,"opacity":100,"animation":"shake","id":"w-1781244041893-jid3","animationDuration":1.7,"animationRepeat":2},{"type":"link","pageIndex":1,"x":8.83043791118421,"y":10.827645811510706,"width":33.80117315995066,"height":5.102420856610797,"url":"","label":"link","opacity":0,"animation":"none","targetPage":3,"id":"w-1781244309214-q8y9"},{"type":"link","pageIndex":1,"x":7.075998406661184,"y":17.655695341596843,"width":35.55558054070724,"height":5.102415173635355,"url":"","label":"link","opacity":0,"animation":"none","targetPage":11,"id":"w-1781244396189-84fo"},{"type":"link","pageIndex":1,"x":7.368404990748354,"y":23.656116109098576,"width":37.30995579769737,"height":6.343883890901416,"url":"","label":"link","opacity":0,"animation":"none","targetPage":13,"id":"w-1781244527001-1n4f"},{"type":"link","pageIndex":1,"x":6.491217362253289,"y":31.10491136376863,"width":34.970751310649675,"height":5.723155215243827,"url":"","label":"link","opacity":0,"animation":"none","targetPage":30,"id":"w-1781244535867-1xzy"},{"type":"link","pageIndex":1,"x":7.368421052631578,"y":38.346783799610115,"width":35.26315789473684,"height":5.102420856610797,"url":"","label":"link","opacity":0,"animation":"none","targetPage":34,"id":"w-1781244551662-yiaw"},{"type":"link","pageIndex":1,"x":10,"y":44.76101610691632,"width":33.21639211554277,"height":4.688603633830885,"url":"","label":"link","opacity":0,"animation":"none","targetPage":36,"id":"w-1781244567411-i0lf"},{"type":"link","pageIndex":1,"x":47.13447972347862,"y":49.933779696956485,"width":35.26315789473684,"height":5.516243762366151,"url":"","label":"link","opacity":0,"animation":"none","targetPage":88,"id":"w-1781244676968-50wo"},{"type":"link","pageIndex":1,"x":52.10524709601151,"y":55.31346610582519,"width":32.92396946957237,"height":6.136972438023739,"url":"","label":"link","opacity":0,"animation":"none","targetPage":96,"id":"w-1781244686360-v9ju"},{"type":"link","pageIndex":1,"x":7.368437114514803,"y":50.14070251578504,"width":36.72514262952303,"height":5.516243762366151,"url":"","label":"link","opacity":0,"animation":"none","targetPage":44,"id":"w-1781246348035-wxx0"},{"type":"link","pageIndex":1,"x":8.245640804893092,"y":56.14111760031134,"width":33.50876657586348,"height":6.136972438023739,"url":"","label":"link","opacity":0,"animation":"none","targetPage":51,"id":"w-1781246404671-kfy9"},{"type":"link","pageIndex":1,"x":47.719308953536185,"y":10.620734358633028,"width":33.801157098067435,"height":5.102420856610797,"url":"","label":"link","opacity":0,"animation":"none","targetPage":55,"id":"w-1781246524611-q0q7"},{"type":"link","pageIndex":1,"x":50.64329448499178,"y":30.484171322160158,"width":37.602346319901315,"height":6.136978120999181,"url":"","label":"link","opacity":0,"animation":"none","targetPage":73,"id":"w-1781246662109-jij0"},{"type":"link","pageIndex":1,"x":50.93565288342927,"y":38.346783799610115,"width":37.89473684210527,"height":4.688597950855443,"url":"","label":"link","opacity":0,"animation":"none","targetPage":74,"id":"w-1781246697226-6ngg"},{"type":"link","pageIndex":1,"x":46.549714740953945,"y":17.24187811881692,"width":39.0643310546875,"height":5.516243762366151,"url":"","label":"link","opacity":0,"animation":"none","targetPage":67,"id":"w-1781246916441-f9c2"},{"type":"link","pageIndex":1,"x":48.59648052014803,"y":23.86302187900081,"width":38.47953394839638,"height":4.4816864979777655,"url":"","label":"link","opacity":0,"animation":"none","targetPage":68,"id":"w-1781247012869-ycgv"},{"type":"link","pageIndex":1,"x":50.64329448499178,"y":44.14028174828329,"width":37.602346319901315,"height":5.309337992463916,"url":"","label":"link","opacity":0,"animation":"none","targetPage":83,"id":"w-1781247264781-k4bw"},{"type":"image","url":"./assets/g-006-03_mqby19k4.png","label":"g-006-03_mqby19k4","pageIndex":68,"x":23.906372070312525,"y":11.44713491656483,"width":18.30408999794408,"height":12.827090471150484,"opacity":100,"animation":"none","id":"w-1781330272245-un0m"},{"type":"image","url":"./assets/g-006-02_mqby19kd.png","label":"g-006-02_mqby19kd","pageIndex":68,"x":60.35862330386516,"y":6.343322867565761,"width":14.600380345394736,"height":9.930341496813892,"opacity":100,"animation":"shake","id":"w-1781330275561-q3zq","animationRepeat":2},{"type":"image","url":"./assets/g-006-04_mqby19k9.png","label":"g-006-04_mqby19k9","pageIndex":68,"x":8.116962633634893,"y":4.550099747584965,"width":33.118896484375,"height":22.207046025736147,"opacity":100,"animation":"slideLeft","id":"w-1781330279825-1zjz"},{"type":"image","url":"./assets/g-006-01_mqby19kb.png","label":"g-006-01_mqby19kb","pageIndex":68,"x":40.86553633840463,"y":11.171243507768857,"width":31.75437525699013,"height":10.206221539658982,"opacity":100,"animation":"slideRight","id":"w-1781330282223-2zmc"},{"type":"image","url":"./assets/1_copy_7_mqbyg6f0.png","label":"1_copy_7_mqbyg6f0","pageIndex":2,"x":0,"y":0,"width":29.220324064555918,"height":32.13876734898742,"opacity":100,"animation":"slideRight","id":"w-1781330950131-ssm7","animationRepeat":1,"animationDuration":1},{"type":"image","url":"./assets/_______mqbyg6g6.png","label":"_______mqbyg6g6","pageIndex":2,"x":59.27872507195724,"y":30.13449897979223,"width":40.72127492804276,"height":67.45154922456939,"opacity":100,"animation":"pulse","id":"w-1781330999282-qm7r","animationRepeat":3,"animationDuration":1},{"type":"image","url":"./assets/1_copy_5_mqbyg6ey.png","label":"1_copy_5_mqbyg6ey","pageIndex":2,"x":51.48148386101974,"y":59.44686008787242,"width":48.51851613898026,"height":40.553139912127556,"opacity":100,"animation":"slideLeft","id":"w-1781331034214-jm4y","animationDuration":1.5},{"type":"image","url":"./assets/Layer_99_copy_mqc10cy0.png","label":"Layer_99_copy_mqc10cy0","pageIndex":99,"x":33.653044048108576,"y":8.96420316500815,"width":34.28849069695723,"height":23.724394785847295,"opacity":100,"animation":"bounce","id":"w-1781335243799-vcpv","animationRepeat":3},{"type":"image","url":"./assets/___________________mqc12gga.png","label":"___________________mqc12gga","pageIndex":0,"x":28.97466719777963,"y":62.07132452426676,"width":52.8070068359375,"height":18.896462779693316,"opacity":100,"animation":"slideUp","id":"w-1781336960263-iwzo","animationDuration":1.1},{"type":"image","url":"./assets/Layer_25_mqc12gdl.png","label":"Layer_25_mqc12gdl","pageIndex":0,"x":8.506816663240155,"y":62.34719320116097,"width":19.863570363898024,"height":14.620313591131282,"opacity":100,"animation":"bounce","id":"w-1781336974999-8s1q","animationRepeat":3},{"type":"image","url":"./assets/Layer_86_copy_mqc12gi9.png","label":"Layer_86_copy_mqc12gi9","pageIndex":0,"x":18.83817331414476,"y":11.998895002255008,"width":60.99416632401316,"height":64.96864588788989,"opacity":100,"animation":"slideDown","id":"w-1781336989639-1onu","animationDuration":1.5},{"type":"image","url":"./assets/Light_copy_2_mqc12gf4.png","label":"Light_copy_2_mqc12gf4","pageIndex":0,"x":51.481515984786185,"y":0,"width":48.518484015213815,"height":40.13930564042132,"opacity":100,"animation":"blurIn","id":"w-1781337074801-251e","animationDuration":0.4,"animationMode":"loop"},{"type":"image","url":"./assets/Light_copy_mqc12gff.png","label":"Light_copy_mqc12gff","pageIndex":0,"x":0,"y":0,"width":49.10329718338816,"height":43.17400884361906,"opacity":100,"animation":"blurIn","id":"w-1781337086755-203e","animationMode":"loop","animationDuration":0.8},{"type":"image","url":"./assets/el-02_mqc397f4.png","label":"el-02_mqc397f4","pageIndex":8,"x":57.43468595805924,"y":56.00192948382217,"width":36.23779296875,"height":37.65639093779096,"opacity":100,"animation":"shake","id":"w-1781339015926-ydm0","animationMode":"in","animationRepeat":3,"animationDuration":1},{"type":"image","url":"./assets/Layer_6_mqc3fga1.png","label":"Layer_6_mqc3fga1","pageIndex":11,"x":36.576933208264826,"y":29.65532003789863,"width":35.847971062911185,"height":25.51763495475442,"opacity":100,"animation":"shake","id":"w-1781339315229-a39h","animationDuration":1,"animationRepeat":3},{"type":"image","url":"./assets/Layer_7_mqc3fg9d.png","label":"Layer_7_mqc3fg9d","pageIndex":11,"x":61.528249640213836,"y":31.72438341989642,"width":35.65297980057566,"height":23.17263470015712,"opacity":100,"animation":"shake","id":"w-1781339357693-7tlv","animationRepeat":3},{"type":"image","url":"./assets/Layer_1_mqc3i384.png","label":"Layer_1_mqc3i384","pageIndex":51,"x":1.879137541118445,"y":51.58784879830075,"width":38.57698139391447,"height":41.38079708958915,"opacity":100,"animation":"shake","id":"w-1781339433253-6dw9","animationRepeat":3,"animationDuration":0.9},{"type":"image","url":"./assets/____________-Photoroom_copy_mqc3qb08.png","label":"____________-Photoroom_copy_mqc3qb08","pageIndex":97,"x":53.73104055304279,"y":12.550649404969741,"width":45.59454666940789,"height":41.932545809328445,"opacity":100,"animation":"shake","id":"w-1781339862421-ft30","animationDuration":1,"animationRepeat":3},{"type":"image","url":"./assets/Layer_2_mqc3qb01.png","label":"Layer_2_mqc3qb01","pageIndex":98,"x":38.91613769531253,"y":8.136540304571115,"width":46.37428685238486,"height":50.071055378549815,"opacity":100,"animation":"shake","id":"w-1781339888991-omjw","animationRepeat":3,"animationDuration":1.3},{"type":"image","url":"./assets/Pixel_mqdayits.png","label":"Pixel_mqdayits","pageIndex":87,"x":64.73684210526316,"y":66.27851080583683,"width":35.26315789473684,"height":29.724809870373598,"opacity":100,"animation":"bounce","id":"w-1781412449170-8zxj","animationRepeat":3,"animationDuration":1},{"type":"image","url":"./assets/1778495452490_mqdietsb.png","label":"1778495452490_mqdietsb","pageIndex":96,"x":46.42105263157897,"y":20.75812188118308,"width":43.74267578125,"height":36.75978221928829,"opacity":100,"animation":"shake","id":"w-1781424944099-6gnj","animationDuration":1,"animationRepeat":3}],"branding":{"customTitle":"เบญจมราชาลัย 2568","primaryColor":"#F43F5E"}};
-const PAGE_IMAGES = ["./pages/page-0001.jpg","./pages/page-0002.jpg","./pages/page-0003.jpg","./pages/page-0004.jpg","./pages/page-0005.jpg","./pages/page-0006.jpg","./pages/page-0007.jpg","./pages/page-0008.jpg","./pages/page-0009.jpg","./pages/page-0010.jpg","./pages/page-0011.jpg","./pages/page-0012.jpg","./pages/page-0013.jpg","./pages/page-0014.jpg","./pages/page-0015.jpg","./pages/page-0016.jpg","./pages/page-0017.jpg","./pages/page-0018.jpg","./pages/page-0019.jpg","./pages/page-0020.jpg","./pages/page-0021.jpg","./pages/page-0022.jpg","./pages/page-0023.jpg","./pages/page-0024.jpg","./pages/page-0025.jpg","./pages/page-0026.jpg","./pages/page-0027.jpg","./pages/page-0028.jpg","./pages/page-0029.jpg","./pages/page-0030.jpg","./pages/page-0031.jpg","./pages/page-0032.jpg","./pages/page-0033.jpg","./pages/page-0034.jpg","./pages/page-0035.jpg","./pages/page-0036.jpg","./pages/page-0037.jpg","./pages/page-0038.jpg","./pages/page-0039.jpg","./pages/page-0040.jpg","./pages/page-0041.jpg","./pages/page-0042.jpg","./pages/page-0043.jpg","./pages/page-0044.jpg","./pages/page-0045.jpg","./pages/page-0046.jpg","./pages/page-0047.jpg","./pages/page-0048.jpg","./pages/page-0049.jpg","./pages/page-0050.jpg","./pages/page-0051.jpg","./pages/page-0052.jpg","./pages/page-0053.jpg","./pages/page-0054.jpg","./pages/page-0055.jpg","./pages/page-0056.jpg","./pages/page-0057.jpg","./pages/page-0058.jpg","./pages/page-0059.jpg","./pages/page-0060.jpg","./pages/page-0061.jpg","./pages/page-0062.jpg","./pages/page-0063.jpg","./pages/page-0064.jpg","./pages/page-0065.jpg","./pages/page-0066.jpg","./pages/page-0067.jpg","./pages/page-0068.jpg","./pages/page-0069.jpg","./pages/page-0070.jpg","./pages/page-0071.jpg","./pages/page-0072.jpg","./pages/page-0073.jpg","./pages/page-0074.jpg","./pages/page-0075.jpg","./pages/page-0076.jpg","./pages/page-0077.jpg","./pages/page-0078.jpg","./pages/page-0079.jpg","./pages/page-0080.jpg","./pages/page-0081.jpg","./pages/page-0082.jpg","./pages/page-0083.jpg","./pages/page-0084.jpg","./pages/page-0085.jpg","./pages/page-0086.jpg","./pages/page-0087.jpg","./pages/page-0088.jpg","./pages/page-0089.jpg","./pages/page-0090.jpg","./pages/page-0091.jpg","./pages/page-0092.jpg","./pages/page-0093.jpg","./pages/page-0094.jpg","./pages/page-0095.jpg","./pages/page-0096.jpg","./pages/page-0097.jpg","./pages/page-0098.jpg","./pages/page-0099.jpg","./pages/page-0100.jpg"];
-
-// ── Constants ─────────────────────────────────────────────────────────────────
-const TOTAL        = PAGE_IMAGES.length;
-const ZOOM_STEPS   = [0.5, 0.65, 0.8, 1.0, 1.2, 1.5, 1.8, 2.2];
-const ZOOM_DEFAULT = 3;
-const MOB_BREAK    = 768;   // px — matches PaperOSReader.tsx
-const MIN_SWIPE_X  = 50;    // px horizontal threshold
-const MAX_SWIPE_Y  = 80;    // px vertical — above this = scroll, not swipe
-
-// ── Responsive page size (recalculated on resize/orientation) ─────────────────
-function computePageSize(){
-  const w = window.innerWidth;
-  if(w < MOB_BREAK){
-    // Single-page portrait: fill available width minus nav arrows (44px each side)
-    const usable = w - 24 - 88;  // padding + arrows
-    const pw = Math.max(220, Math.min(usable, 340));
-    return { pageW: pw, pageH: Math.round(pw * (537/380)), isMobile: true };
-  }
-  return { pageW: 380, pageH: 537, isMobile: false };
-}
-
-// ── State ─────────────────────────────────────────────────────────────────────
-let pageFlip     = null;
-let currentIdx   = 0;
-let savedPage    = 0;   // page to restore after remount
-let zoomIdx      = ZOOM_DEFAULT;
-let thumbOpen    = false;
-let isDark       = true;
-let mobDrawerOpen= false;
-let { pageW, pageH, isMobile } = computePageSize();
-
-// Pan state
-let panX = 0, panY = 0;
-let panDragging = false;
-let panStartX = 0, panStartY = 0, panOX = 0, panOY = 0;
-
-// Touch swipe state
-let touchStartX = 0, touchStartY = 0;
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function $(id){ return document.getElementById(id); }
-
-function buildPageLabel(idx){
-  if(isMobile)         return (idx+1) + ' / ' + TOTAL;
-  if(idx === 0)        return 'Front Cover';
-  if(idx >= TOTAL - 1) return 'Back Cover';
-  return (idx+1) + ' – ' + Math.min(idx+2, TOTAL);
-}
-
-function getYouTubeId(url){
-  try{
-    const u = new URL(url);
-    return u.searchParams.get('v') || u.pathname.split('/').pop() || '';
-  }catch{ return ''; }
-}
-
-// ── Widget animation engine (mirrors the workspace editor) ────────────────────
-var WK_EMPHASIS = ['pulse','bounce','shake','float','spin'];
-function widgetAnimStyle(effect, mode, dur, repeat){
-  if(!effect || effect === 'none') return '';
-  var d = (dur && dur > 0) ? dur : 0.6;
-  var name = 'wk-' + effect;
-  if(mode === 'loop'){
-    return WK_EMPHASIS.indexOf(effect) >= 0
-      ? name + ' ' + d + 's ease-in-out infinite'
-      : name + ' ' + d + 's ease-in-out infinite alternate';
-  }
-  // repeat: undefined/1 = play once (default), 0 = infinite, >1 = N times
-  var rep = (typeof repeat === 'number') ? repeat : 1;
-  var iterCount = rep === 0 ? 'infinite' : String(rep);
-  if(mode === 'out') return name + ' ' + d + 's ease both reverse ' + iterCount;
-  return name + ' ' + d + 's ease both ' + iterCount;
-}
-function triggerWidgetAnim(inner, phase){
-  var effect = inner.dataset.wanim;
-  if(!effect || effect === 'none') return;
-  var mode   = inner.dataset.wmode || 'in';
-  var dur    = parseFloat(inner.dataset.wdur) || 0.6;
-  var repeat = inner.dataset.wrepeat !== undefined ? parseInt(inner.dataset.wrepeat, 10) : 1;
-  if(isNaN(repeat)) repeat = 1;
-  if(phase === 'enter'){
-    if(mode === 'in' || mode === 'loop'){
-      inner.style.animation = 'none';
-      void inner.offsetWidth;                 // force reflow → restart
-      inner.style.animation = widgetAnimStyle(effect, mode, dur, repeat);
-    } else {
-      inner.style.animation = '';             // 'out': stay visible until exit
-    }
-  } else { // 'exit'
-    if(mode === 'out'){
-      inner.style.animation = 'none';
-      void inner.offsetWidth;
-      inner.style.animation = widgetAnimStyle(effect, 'out', dur, repeat);
-    } else if(mode === 'loop'){
-      inner.style.animation = '';             // stop the loop when off-page
-    }
-  }
-}
-function activePagesFor(idx){
-  return isMobile ? [idx] : [idx, idx + 1];
-}
-var prevActivePages = [];
-function animatePages(idx){
-  var next = activePagesFor(idx).filter(function(i){ return i >= 0 && i < TOTAL; });
-  // Exit widgets on pages that are no longer active
-  prevActivePages.filter(function(i){ return next.indexOf(i) < 0; }).forEach(function(i){
-    document.querySelectorAll('.page-inner[data-page-idx="' + i + '"] .widget-anim-inner')
-      .forEach(function(el){ triggerWidgetAnim(el, 'exit'); });
-  });
-  // Enter widgets on pages that just became active
-  next.filter(function(i){ return prevActivePages.indexOf(i) < 0; }).forEach(function(i){
-    document.querySelectorAll('.page-inner[data-page-idx="' + i + '"] .widget-anim-inner')
-      .forEach(function(el){ triggerWidgetAnim(el, 'enter'); });
-  });
-  prevActivePages = next;
-}
-
-// ── Theme ─────────────────────────────────────────────────────────────────────
+const BOOKS = [{"folder":"mq8pbiugbj6go","title":"เบญจมราชาลัย 2568","cover":"page-0001.jpg","totalPages":100,"coverWidgets":[{"type":"image","url":"./mq8pbiugbj6go/assets/___________________mqc12gga.png","label":"___________________mqc12gga","pageIndex":0,"x":28.97466719777963,"y":62.07132452426676,"width":52.8070068359375,"height":18.896462779693316,"opacity":100,"animation":"slideUp","id":"w-1781336960263-iwzo","animationDuration":1.1},{"type":"image","url":"./mq8pbiugbj6go/assets/Layer_25_mqc12gdl.png","label":"Layer_25_mqc12gdl","pageIndex":0,"x":8.506816663240155,"y":62.34719320116097,"width":19.863570363898024,"height":14.620313591131282,"opacity":100,"animation":"bounce","id":"w-1781336974999-8s1q","animationRepeat":3},{"type":"image","url":"./mq8pbiugbj6go/assets/Layer_86_copy_mqc12gi9.png","label":"Layer_86_copy_mqc12gi9","pageIndex":0,"x":18.83817331414476,"y":11.998895002255008,"width":60.99416632401316,"height":64.96864588788989,"opacity":100,"animation":"slideDown","id":"w-1781336989639-1onu","animationDuration":1.5},{"type":"image","url":"./mq8pbiugbj6go/assets/Light_copy_2_mqc12gf4.png","label":"Light_copy_2_mqc12gf4","pageIndex":0,"x":51.481515984786185,"y":0,"width":48.518484015213815,"height":40.13930564042132,"opacity":100,"animation":"blurIn","id":"w-1781337074801-251e","animationDuration":0.4,"animationMode":"loop"},{"type":"image","url":"./mq8pbiugbj6go/assets/Light_copy_mqc12gff.png","label":"Light_copy_mqc12gff","pageIndex":0,"x":0,"y":0,"width":49.10329718338816,"height":43.17400884361906,"opacity":100,"animation":"blurIn","id":"w-1781337086755-203e","animationMode":"loop","animationDuration":0.8}]}];
+let isDark = true;
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  $('icon-sun').style.display  = isDark ? 'block' : 'none';
-  $('icon-moon').style.display = isDark ? 'none'  : 'block';
+  document.getElementById('icon-sun').style.display  = isDark ? 'block' : 'none';
+  document.getElementById('icon-moon').style.display = isDark ? 'none'  : 'block';
 }
-function toggleTheme(){ isDark = !isDark; applyTheme(); }
+document.getElementById('btn-theme').addEventListener('click',()=>{ isDark=!isDark; applyTheme(); });
 
-// ── Mobile / Desktop layout ───────────────────────────────────────────────────
-function applyResponsive(){
-  const mob = window.innerWidth < MOB_BREAK;
-  // Show/hide topbar controls
-  $('btn-thumb').style.display       = mob ? 'none'  : 'flex';
-  $('btn-mob-menu').style.display    = mob ? 'flex'  : 'none';
-  $('zoom-group-desktop').style.display = mob ? 'none' : 'flex';
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  // Swipe hint in bottombar
-  const sh = $('swipe-hint');
-  if(sh) sh.classList.toggle('visible', mob && ZOOM_STEPS[zoomIdx] <= 1);
-
-  updatePanHint();
-}
-
-// ── Zoom & shadow ─────────────────────────────────────────────────────────────
-function updateShadow(){
-  const z  = ZOOM_STEPS[zoomIdx];
-  const mult = isMobile ? 1 : 2;
-  $('book-shadow').style.width     = (pageW * mult * z * 0.8) + 'px';
-  $('book-shadow').style.marginTop = (pageH * (z - 1) / 2 + 6) + 'px';
-}
-
-function applyZoom(){
-  const z = ZOOM_STEPS[zoomIdx];
-  $('zoom-wrapper').style.transform = 'scale(' + z + ')';
-  const pct = Math.round(z * 100) + '%';
-  $('btn-zoom-reset').textContent = pct;
-  const mv = $('mob-zoom-val');
-  if(mv) mv.textContent = pct;
-  $('btn-zoom-out').disabled = zoomIdx === 0;
-  $('btn-zoom-in').disabled  = zoomIdx === ZOOM_STEPS.length - 1;
-  const mbo = $('mob-btn-zoom-out'), mbi = $('mob-btn-zoom-in');
-  if(mbo) mbo.disabled = zoomIdx === 0;
-  if(mbi) mbi.disabled = zoomIdx === ZOOM_STEPS.length - 1;
-  updateShadow();
-  updatePanHint();
-  applyResponsive();
-  if(z <= 1){ panX = panY = 0; applyPan(); }
-}
-
-function zoomIn () { if(zoomIdx < ZOOM_STEPS.length - 1){ zoomIdx++; applyZoom(); } }
-function zoomOut() { if(zoomIdx > 0)                    { zoomIdx--; applyZoom(); } }
-function zoomReset(){ zoomIdx = ZOOM_DEFAULT; panX = panY = 0; applyZoom(); applyPan(); }
-
-// ── Pan ───────────────────────────────────────────────────────────────────────
-function applyPan(){
-  const z = ZOOM_STEPS[zoomIdx];
-  $('book-scene').style.transform = z <= 1 ? '' : 'translate(' + panX + 'px,' + panY + 'px)';
-}
-
-function updatePanHint(){
-  const z   = ZOOM_STEPS[zoomIdx];
-  const mob = window.innerWidth < MOB_BREAK;
-  const hint = $('pan-hint');
-  const txt  = $('pan-hint-text');
-  if(z > 1){
-    hint.classList.add('visible');
-    if(txt) txt.textContent = mob
-      ? 'Pinch zoom active — swipe to flip disabled'
-      : 'Drag to pan · Ctrl+scroll to zoom';
-  } else {
-    hint.classList.remove('visible');
-  }
-  $('stage').style.cursor = z > 1 ? 'grab' : '';
-}
-
-function initPan(){
-  const stage = $('stage');
-
-  stage.addEventListener('pointerdown', function(e){
-    if(ZOOM_STEPS[zoomIdx] <= 1) return;
-    const t = e.target;
-    if(t.closest('button,input,a,.widget-wrap,.nav-btn')) return;
-    panDragging = true;
-    panStartX = e.clientX; panStartY = e.clientY;
-    panOX = panX; panOY = panY;
-    stage.setPointerCapture(e.pointerId);
-    stage.style.cursor = 'grabbing';
-    e.preventDefault();
-  });
-
-  stage.addEventListener('pointermove', function(e){
-    if(!panDragging) return;
-    panX = panOX + (e.clientX - panStartX);
-    panY = panOY + (e.clientY - panStartY);
-    applyPan();
-  });
-
-  stage.addEventListener('pointerup',     function(){ panDragging = false; stage.style.cursor = ZOOM_STEPS[zoomIdx] > 1 ? 'grab' : ''; });
-  stage.addEventListener('pointercancel', function(){ panDragging = false; });
-
-  // Ctrl+scroll to zoom
-  stage.addEventListener('wheel', function(e){
-    if(e.ctrlKey || e.metaKey){ e.preventDefault(); e.deltaY < 0 ? zoomIn() : zoomOut(); }
-  }, { passive: false });
-}
-
-// ── Touch Swipe — flip pages on mobile, disabled when zoomed in ───────────────
-// Registered on stage with passive listeners to not block native scroll.
-// Suppressed when zoom > 1 so pan/pinch takes priority.
-function initSwipe(){
-  const stage = $('stage');
-
-  stage.addEventListener('touchstart', function(e){
-    if(ZOOM_STEPS[zoomIdx] > 1) return;   // pan mode — don't hijack
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  stage.addEventListener('touchend', function(e){
-    if(ZOOM_STEPS[zoomIdx] > 1 || !pageFlip) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
-    // Reject vertical-dominant gestures (scrolling)
-    if(Math.abs(dx) < MIN_SWIPE_X || dy > MAX_SWIPE_Y) return;
-    if(dx < 0) pageFlip.flipNext();   // swipe left  → next
-    else       pageFlip.flipPrev();   // swipe right → prev
-  }, { passive: true });
-}
-
-// ── Thumbnail panel ───────────────────────────────────────────────────────────
-// Thumbnails composite the page background image WITH the widgets placed on
-// that page (image widgets show their picture; media/link widgets show a small
-// type chip), so the thumbnail matches what the reader actually sees.
-function buildThumbWidgetHtml(pageIdx){
-  return (BOOK_CONFIG.widgets || [])
-    .filter(function(w){ return w.pageIndex === pageIdx; })
-    .map(function(w){
-      var pos = 'position:absolute;left:'+w.x+'%;top:'+w.y+'%;'+
-        'width:'+(w.width!=null?w.width:20)+'%;height:'+(w.height!=null?w.height:15)+'%;'+
-        'opacity:'+((w.opacity!=null?w.opacity:100)/100)+';overflow:hidden;';
-      // Image widgets are real, visible page content → show the picture with a
-      // transparent letterbox (object-fit:contain) so the page art shows through.
-      // Wrapped in a <div> so the global ".thumb-stage > img" rule (which forces
-      // inset:0 / object-fit:cover for the page image) can't hijack its position.
-      if(w.type === 'image' && w.url){
-        return '<div style="'+pos+'">'+
-          '<img src="'+w.url+'" alt="" style="width:100%;height:100%;object-fit:contain;display:block;background:transparent;"/>'+
-        '</div>';
-      }
-      // link / audio / youtube / video are interactive overlays that are NOT
-      // painted onto the page in the reader. Filling the whole widget box with a
-      // solid colour buried the page under dark blocks (e.g. a Contents page with
-      // many links). Show a tiny corner chip instead: it still hints at an
-      // interactive zone while keeping the thumbnail faithful to the page.
-      var dot =
-        w.type === 'link'  ? 'rgba(59,130,246,.9)' :
-        w.type === 'audio' ? 'rgba(16,185,129,.9)' :
-                             'rgba(123,110,246,.9)';
-      return '<span style="position:absolute;left:'+w.x+'%;top:'+w.y+'%;'+
-        'width:7px;height:7px;margin:1px;border-radius:50%;'+
-        'background:'+dot+';box-shadow:0 0 0 1.5px rgba(255,255,255,.7);"></span>';
-    })
-    .join('');
-}
-
-function buildThumbnails(){
-  const list = $('thumb-list');
-  list.innerHTML = '';
-  PAGE_IMAGES.forEach((src, idx) => {
-    const item = document.createElement('div');
-    item.className = 'thumb-item' + (idx === 0 ? ' active' : '');
-    item.dataset.idx = idx;
-    // Composite stage: page image as background + widget overlays on top
-    const stage = document.createElement('div');
-    stage.className = 'thumb-stage';
-    stage.innerHTML =
-      '<img src="'+src+'" alt="p.'+(idx+1)+'" loading="lazy"/>' +
-      buildThumbWidgetHtml(idx);
-    const num = document.createElement('div');
-    num.className = 'thumb-num';
-    num.textContent = idx + 1;
-    item.appendChild(stage); item.appendChild(num);
-    item.addEventListener('click', () => { if(pageFlip) pageFlip.flip(idx); });
-    list.appendChild(item);
-  });
-}
-
-function syncThumbnails(idx){
-  document.querySelectorAll('.thumb-item').forEach(el => {
-    el.classList.toggle('active', parseInt(el.dataset.idx) === idx);
-  });
-  const active = $('thumb-list').querySelector('.thumb-item.active');
-  if(active) active.scrollIntoView({ block:'nearest', behavior:'smooth' });
-}
-
-function toggleThumbPanel(){
-  thumbOpen = !thumbOpen;
-  $('thumb-panel').classList.toggle('hidden', !thumbOpen);
-  $('btn-thumb').classList.toggle('active', thumbOpen);
-  const mbt = $('mob-btn-thumb');
-  if(mbt) mbt.classList.toggle('active', thumbOpen);
-}
-
-// ── Build page element ────────────────────────────────────────────────────────
-function buildPageEl(pageIdx){
-  const outer = document.createElement('div');
-  outer.className = 'page-inner';
-  outer.dataset.pageIdx = pageIdx;
-  const img = document.createElement('img');
-  img.className = 'page-img';
-  img.src = PAGE_IMAGES[pageIdx];
-  img.alt = 'Page ' + (pageIdx+1);
-  outer.appendChild(img);
-
-  (BOOK_CONFIG.widgets || []).filter(w => w.pageIndex === pageIdx).forEach(w => {
-    const wrap = document.createElement('div');
-    wrap.className = 'widget-wrap';
-    // Emphasis effects animate beyond the widget box → let the frame overflow so
-    // the moving/scaling/rotating image isn't cropped (see .widget-wrap--emphasis).
-    if(WK_EMPHASIS.indexOf(w.animation) >= 0) wrap.classList.add('widget-wrap--emphasis');
-    wrap.style.cssText =
-      'left:'+w.x+'%;top:'+w.y+'%;'+
-      'width:'+(w.width??20)+'%;height:'+(w.height??15)+'%;'+
-      'opacity:'+((w.opacity??100)/100);
-    wrap.dataset.widgetType = w.type;
-    wrap.dataset.widgetUrl  = w.url || '';
-    wrap.dataset.targetPage = String(w.targetPage ?? 0);
-
-    const inner = document.createElement('div');
-    inner.style.cssText = 'width:100%;height:100%';
-    inner.className = 'widget-anim-inner';
-    inner.dataset.wanim   = w.animation || 'none';
-    inner.dataset.wmode   = w.animationMode || 'in';
-    inner.dataset.wdur    = String(w.animationDuration || 0.6);
-    inner.dataset.wrepeat = String(typeof w.animationRepeat === 'number' ? w.animationRepeat : 1);
-
-    if(w.type === 'link'){
-      const btn = document.createElement('button');
-      btn.className = 'widget-link-btn';
-      btn.dataset.action = 'link';
-      btn.textContent = w.label || ('p.' + ((w.targetPage??0)+1));
-      inner.appendChild(btn);
-    } else if(w.type === 'image'){
-      const wImg = document.createElement('img');
-      wImg.src = w.url; wImg.alt = w.label || '';
-      wImg.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block';
-      inner.appendChild(wImg);
-    } else if(w.type === 'youtube' || w.type === 'video'){
-      const btn = document.createElement('button');
-      btn.className = 'widget-play-btn';
-      btn.dataset.action = 'play';
-      btn.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>';
-      inner.appendChild(btn);
-    } else if(w.type === 'audio'){
-      const aw = document.createElement('div');
-      aw.className = 'widget-audio-wrap';
-      const audio = document.createElement('audio');
-      audio.src = w.url; audio.controls = true;
-      aw.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:.7"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
-      aw.appendChild(audio);
-      inner.appendChild(aw);
+// Composite the cover-page widgets over the cover image so the shelf thumbnail
+// matches what the book's cover actually looks like (image widgets show their
+// picture; media/link widgets show a small coloured chip).
+function coverWidgetHtml(book){
+  return (book.coverWidgets || []).map(function(w){
+    var box = 'position:absolute;left:'+w.x+'%;top:'+w.y+'%;'+
+      'width:'+(w.width!=null?w.width:20)+'%;height:'+(w.height!=null?w.height:15)+'%;'+
+      'opacity:'+((w.opacity!=null?w.opacity:100)/100)+';overflow:hidden;';
+    if(w.type === 'image' && w.url){
+      return '<img src="'+esc(w.url)+'" alt="" loading="lazy" style="'+box+'object-fit:contain;"/>';
     }
-
-    wrap.appendChild(inner);
-    outer.appendChild(wrap);
-  });
-  return outer;
+    var bg =
+      w.type === 'link'  ? 'background:rgba(59,130,246,.45);' :
+      w.type === 'audio' ? 'background:rgba(16,185,129,.45);' :
+                           'background:rgba(123,110,246,.45);';
+    return '<div style="'+box+bg+'border-radius:2px;"></div>';
+  }).join('');
 }
 
-// ── Update UI ─────────────────────────────────────────────────────────────────
-function updateUI(idx){
-  currentIdx = idx;
-  const pct = TOTAL > 1 ? (idx / (TOTAL-1)) * 100 : 0;
-  $('progress-fill').style.width = pct + '%';
-  $('progress-thumb').style.left = pct + '%';
-  $('lbl-pct').textContent    = Math.round(pct) + '%';
-  $('lbl-pg').textContent     = (idx+1) + ' / ' + TOTAL;
-  $('lbl-spread').textContent = buildPageLabel(idx);
-  $('nav-left').disabled  = idx <= 0;
-  $('nav-right').disabled = idx >= TOTAL - 1;
-  $('btn-prev').disabled  = idx <= 0;
-  $('btn-next').disabled  = idx >= TOTAL - 1;
-  syncThumbnails(idx);
-  animatePages(idx);
+function buildCards(){
+  const shelf = document.getElementById('shelf');
+  shelf.innerHTML = '';
+  document.getElementById('shelf-count').textContent = BOOKS.length + ' book' + (BOOKS.length!==1?'s':'') + ' in this shelf';
+  BOOKS.forEach(book => {
+    const a = document.createElement('a');
+    a.className = 'book-card';
+    a.href = './' + esc(book.folder) + '/index.html';
+    const coverHtml = book.cover
+      ? '<img src="./'+ esc(book.folder) +'/pages/'+ esc(book.cover) +'" alt="'+esc(book.title)+'" loading="lazy"/>' + coverWidgetHtml(book)
+      : '<div class="cover-placeholder"><svg viewBox="0 0 64 64" width="48" height="48" fill="none"><rect x="8" y="4" width="32" height="48" rx="3" stroke="white" stroke-width="2.5"/><rect x="16" y="12" width="16" height="2" rx="1" fill="white"/><rect x="16" y="18" width="20" height="2" rx="1" fill="white"/></svg></div>';
+    a.innerHTML =
+      '<div class="book-cover">' + coverHtml + '</div>' +
+      '<div class="book-info">' +
+        '<div class="book-title">' + esc(book.title) + '</div>' +
+        '<div class="book-meta">' + (book.totalPages||0) + ' pages</div>' +
+        '<span class="book-badge">&#9654; Open Book</span>' +
+      '</div>';
+    shelf.appendChild(a);
+  });
 }
 
-// ── Widget event delegation ───────────────────────────────────────────────────
-document.addEventListener('click', function(e){
-  const linkBtn = e.target.closest('[data-action="link"]');
-  if(linkBtn){
-    e.stopPropagation();
-    const tgt = parseInt(linkBtn.closest('.widget-wrap').dataset.targetPage, 10) || 0;
-    pageFlip && pageFlip.flip(tgt);
-    return;
-  }
-  const playBtn = e.target.closest('[data-action="play"]');
-  if(playBtn){
-    e.stopPropagation();
-    const wrap = playBtn.closest('.widget-wrap');
-    if(!wrap) return;
-    const type = wrap.dataset.widgetType;
-    const url  = wrap.dataset.widgetUrl;
-    if(type === 'youtube'){
-      const iframe = document.createElement('iframe');
-      iframe.className = 'widget-iframe';
-      iframe.src = 'https://www.youtube.com/embed/' + getYouTubeId(url) + '?autoplay=1';
-      iframe.allow = 'autoplay; encrypted-media';
-      iframe.allowFullscreen = true;
-      playBtn.replaceWith(iframe);
-    } else if(type === 'video'){
-      const video = document.createElement('video');
-      video.className = 'widget-video';
-      video.src = url; video.controls = true; video.autoplay = true;
-      playBtn.replaceWith(video);
-    }
-  }
-});
-
-// ── Init / Rebuild flipbook ───────────────────────────────────────────────────
-// Called on first load AND when orientation changes require a new mode.
-function initFlipBook(restorePage){
-  const wrapper = $('book-wrapper');
-  wrapper.innerHTML = '';   // clear on rebuild
-  prevActivePages = [];     // DOM rebuilt → re-evaluate which widgets are on-screen
-
-  PAGE_IMAGES.forEach((_, idx) => wrapper.appendChild(buildPageEl(idx)));
-
-  const PF = (window.St && window.St.PageFlip) || window.PageFlip;
-  if(!PF){ alert('PageFlip engine not loaded. Please re-export the ZIP.'); return; }
-
-  if(pageFlip){ try{ pageFlip.destroy(); } catch(e){} }
-
-  pageFlip = new PF(wrapper, {
-    width:  pageW, height: pageH, size: 'fixed',
-    minWidth: pageW, maxWidth: pageW, minHeight: pageH, maxHeight: pageH,
-    drawShadow: true, flippingTime: 700,
-    usePortrait: isMobile,   // ← single-page on mobile, double on desktop
-    startPage: 0, showCover: true, mobileScrollSupport: true,
-    useMouseEvents: true, swipeDistance: 30, maxShadowOpacity: 0.55,
-    showPageCorners: !isMobile, startZIndex: 10, autoSize: false,
-  });
-
-  pageFlip.loadFromHTML(wrapper.querySelectorAll('.page-inner'));
-  pageFlip.on('flip', e => updateUI(e.data));
-
-  // Restore page after remount (orientation change)
-  if(restorePage > 0){
-    setTimeout(() => { try{ pageFlip.flip(restorePage); }catch(e){} }, 80);
-  }
-}
-
-// ── Orientation / Resize handling (Adaptive Flip Mode) ───────────────────────
-// Re-initialises the flipbook when breakpoint crosses 768px.
-// Saves currentIdx before rebuilding so we can restore position.
-let prevMob = isMobile;
-let resizeTimer = null;
-
-function onResize(){
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(function(){
-    const sizes = computePageSize();
-    const nowMob = sizes.isMobile;
-
-    applyResponsive();
-
-    // Only rebuild if layout mode flipped (single ↔ double)
-    if(nowMob !== prevMob){
-      savedPage = currentIdx;   // save before remount
-      prevMob   = nowMob;
-      pageW     = sizes.pageW;
-      pageH     = sizes.pageH;
-      isMobile  = sizes.isMobile;
-      initFlipBook(savedPage);
-      applyZoom();
-      updateUI(savedPage);
-    }
-  }, 150);
-}
-
-window.addEventListener('resize',            onResize);
-window.addEventListener('orientationchange', onResize);
-
-// ── First load ────────────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', function(){
-  $('lbl-name').textContent  = BOOK_CONFIG.name || 'Book';
-  $('lbl-pages').textContent = TOTAL + ' pages';
-
-  applyTheme();
-  buildThumbnails();
-  initFlipBook(0);
-
-  // Wire desktop controls
-  $('nav-left').addEventListener('click',       () => pageFlip && pageFlip.flipPrev());
-  $('nav-right').addEventListener('click',      () => pageFlip && pageFlip.flipNext());
-  $('btn-prev').addEventListener('click',       () => pageFlip && pageFlip.flipPrev());
-  $('btn-next').addEventListener('click',       () => pageFlip && pageFlip.flipNext());
-  $('btn-zoom-in').addEventListener('click',    zoomIn);
-  $('btn-zoom-out').addEventListener('click',   zoomOut);
-  $('btn-zoom-reset').addEventListener('click', zoomReset);
-  $('btn-thumb').addEventListener('click',      toggleThumbPanel);
-  $('btn-theme').addEventListener('click',      toggleTheme);
-
-  // Wire mobile menu
-  $('btn-mob-menu').addEventListener('click', function(){
-    mobDrawerOpen = !mobDrawerOpen;
-    $('mob-drawer').classList.toggle('open', mobDrawerOpen);
-    this.classList.toggle('active', mobDrawerOpen);
-  });
-  const mbt = $('mob-btn-thumb'), mbo = $('mob-btn-zoom-out'),
-        mbi = $('mob-btn-zoom-in'), mbr = $('mob-zoom-val');
-  if(mbt) mbt.addEventListener('click', () => { toggleThumbPanel(); });
-  if(mbo) mbo.addEventListener('click', zoomOut);
-  if(mbi) mbi.addEventListener('click', zoomIn);
-  if(mbr) mbr.addEventListener('click', zoomReset);
-
-  // Progress seek
-  $('progress-track').addEventListener('click', function(e){
-    const r = (e.clientX - this.getBoundingClientRect().left) / this.offsetWidth;
-    pageFlip && pageFlip.flip(Math.round(r * (TOTAL-1)));
-  });
-
-  // Keyboard
-  document.addEventListener('keydown', function(e){
-    if(e.target.tagName === 'INPUT') return;
-    if(e.key === 'ArrowRight' || e.key === 'PageDown') pageFlip && pageFlip.flipNext();
-    if(e.key === 'ArrowLeft'  || e.key === 'PageUp')   pageFlip && pageFlip.flipPrev();
-    if(e.key === 'Home') pageFlip && pageFlip.flip(0);
-    if(e.key === 'End')  pageFlip && pageFlip.flip(TOTAL-1);
-    if((e.ctrlKey||e.metaKey) && (e.key==='='||e.key==='+')){ e.preventDefault(); zoomIn(); }
-    if((e.ctrlKey||e.metaKey) && e.key==='-'){ e.preventDefault(); zoomOut(); }
-    if((e.ctrlKey||e.metaKey) && e.key==='0'){ e.preventDefault(); zoomReset(); }
-  });
-
-  initPan();
-  initSwipe();     // ← touch swipe (disabled when zoom > 1)
-  applyZoom();
-  applyResponsive();
-  updateUI(0);
-
-  $('loader').style.display = 'none';
-  $('app').style.display    = 'flex';
-});
+buildCards();
+applyTheme();
 </script>
 </body>
 </html>
